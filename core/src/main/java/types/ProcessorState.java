@@ -20,9 +20,7 @@ public class ProcessorState {
     }
 
     public void setRegister(int index, RVWord result) {
-        if (index == 0) {
-            return;
-        }
+        if (index == 0) return;
         registers[index] = result;
     }
 }
