@@ -27,9 +27,9 @@ jobs:
         run: ./gradlew clean test build
 
       - name: Publish Test Report
-        uses: dorny/test-reporter@v1
+        uses: dorny/test-reporter@v2
         with:
-          reporter: junit
+          reporter: Junit
           path: '**/build/test-results/test/*.xml'
           name: RISC-V Emulator Unit Test Results
           fail-on-error: 'true'
