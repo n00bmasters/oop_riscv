@@ -22,6 +22,12 @@ public class RVWord {
         } else return new RVWord(value);
     }
 
+    public BigInteger getSignedValue() {
+        if (value.testBit(xlen - 1)) {
+            return value.subtract(BigInteger.ONE.shiftLeft(xlen));
+        } else return value;
+    }
+
     public RVWord add(RVWord other) {
         RVWord res = new RVWord(value.add(other.value));
         res.trunc();
@@ -59,6 +65,8 @@ public class RVWord {
     }
 
     public void trunc() { value = value.and(BigInteger.ONE.shiftLeft(xlen).subtract(BigInteger.ONE)); }
+
+    public BigInteger getValue() { return value; }
 
     public static void setXlen(int value) { xlen = value; }
 
