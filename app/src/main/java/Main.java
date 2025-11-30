@@ -1,4 +1,6 @@
 import java.math.BigInteger;
+import java.utils.List;
+import java.utils.ArrayList;
 import java.io.RandomAccessFile;
 import java.io.File;
 import java.io.IOException;
@@ -9,7 +11,9 @@ public class Main {
 
     private static void printState(ProcessorState) {
         // TODO
+        return;
     }
+
     private static ProcessorState elfHeaderParse(RandomAccessFile sc) {
         byte[] head = new byte[16];
         sc.seek(0);
@@ -36,14 +40,51 @@ public class Main {
             int flags = b.getInt(); // should be checked for unsupported bs
             assert (b.getShort() == 52); // 32 bit elf header
             assert (b.getShort() == 32); // 32 bit program header
-            int head_num = b.getShort();
+            short head_num = b.getShort();
             assert(b.getShort() == 40); // section header entry size 32 bit
-            int sect_num = b.getShort();
-            int string_table = b.getShort();
+            short sect_num = b.getShort();
+            short string_table = b.getShort();
 
+            for (short i = 0; i < head_num; i++) {
+                long sect_offs_real = Integer.toUnsignedLong(sect_offs) + (long) i * 40;
+                sc.seek(sect_offs_real);
+                byte[] sh = new byte[40];
+                sc.readFully(sh);
+                ByteBuffer sb = ByteBuffer.wrap(sh).order(order);
+                int sh_name   = sb.getInt();
+                int sh_type   = sb.getInt();
+                int sh_flags  = sb.getInt();
+                int sh_addr   = sb.getInt();
+                int sh_offset = sb.getInt();
+                int sh_size   = sb.getInt();
+                int sh_link   = sb.getInt();
+                int sh_info   = sb.getInt();
+                int sh_addralign = sb.getInt();
+                int sh_entsize   = sb.getInt();
+                state.addSection(new Section32(sh_name, sh_type, sh_flags, sh_addr, sh_offset, sh_size, sh_link, sh_info, sh_addralign, sh_entsize));
+            }
+            Section32 shstr = state.getSection(Short.toUnsignedInt(string_table));
+            byte[] strtab = new byte[shstr.sh_size];
+            sc.seek(Integer.toUnsignedLong(shstr.sh_offset));
+            sc.readFully(strtab);
+            for (int i = 0; i < sections.size(); i++) {
+                Section32 tmp_s = state.getSection(i);
+                String name = (strtab == null) ? "" : readStringAt(strtab, tmp_s.sh_name);
+                tmp_s.setName(name);
+            } // section part finished, not sure for what purpose but whtvr
 
+            sc.seek(head_offs);
+            Byte
         }
     }
+
+    private static String readStringAt(byte[] table, int offset) {
+        if (offset < 0 || offset >= table.length) return "";
+        int i = offset;
+        while (i < table.length && table[i] != 0) i++;
+        return new String(table, offset, i - offset, StandardCharsets.UTF_8);
+    }
+
 
     public static void main(String[] args) throws IOException {
         if (args.length != 1) {
@@ -55,7 +96,7 @@ public class Main {
             elfHeaderParse(raf);
         }
 
-        RVWord testWord = new RVWord(BigInteger.valueOf(32));
-        System.out.printf("types.RVWord xlen = %d\n", testWord.getXlen());
+        // RVWord testWord = new RVWord(BigInteger.valueOf(32));
+        // System.out.printf("types.RVWord xlen = %d\n", testWord.getXlen());
     }
 }
