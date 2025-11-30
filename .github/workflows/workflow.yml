@@ -23,5 +23,13 @@ jobs:
       - name: Make gradlew executable
         run: chmod +x ./gradlew
 
-      - name: Execute Gradle build
-        run: ./gradlew build
+      - name: Execute tests and build
+        run: ./gradlew clean test build
+
+      - name: Publish Test Report
+        uses: dorny/test-reporter@v1
+        with:
+          reporter: junit
+          path: '**/build/test-results/test/*.xml'
+          name: RISC-V Emulator Unit Test Results
+          fail-on-error: 'true'
