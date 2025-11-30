@@ -4,9 +4,14 @@ import java.math.BigInteger;
 
 public class ProcessorState {
 
+    private int xlen;
+    private int endian;
     RVWord[] registers = new RVWord[32];
 
-    public ProcessorState(int xlen) {
+
+    public ProcessorState(int xlen, int endian) {
+        this.xlen = xlen;
+        this.endian = endian; // 1 - little, 2 - big
         RVWord.setXlen(xlen);
         initRegisters();
     }
