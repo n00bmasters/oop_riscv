@@ -1,6 +1,6 @@
 import java.math.BigInteger;
-import java.utils.List;
-import java.utils.ArrayList;
+import java.util.List;
+import java.util.ArrayList;
 import java.io.RandomAccessFile;
 import java.io.File;
 import java.io.IOException;
@@ -69,7 +69,7 @@ public class Main {
             sc.readFully(strtab);
             for (int i = 0; i < sections.size(); i++) {
                 Section32 tmp_s = state.getSection(i);
-                String name = (strtab == null) ? "" : readStringAt(strtab, tmp_s.sh_name);
+                String name = (strtab == null) ? "" : readStringAt(strtab, tmp_s.sh_name); //check
                 tmp_s.setName(name);
             } // section part finished, not sure for what purpose but whtvr
 

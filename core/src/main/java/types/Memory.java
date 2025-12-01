@@ -1,7 +1,7 @@
 package types;
 
-import java.utils.List;
-import java.jutils.ArrayList;
+import java.util.List;
+import java.util.ArrayList;
 
 public class Memory{
     private List<Section> sections = new ArrayList<>();
@@ -24,7 +24,7 @@ public class Memory{
         return sections.get(ind);
     }
 
-    public Segment addSegment(int ind){
+    public Segment getSegment(int ind){
         return segments.get(ind);
     }
 
