@@ -28,7 +28,7 @@ public class Main {
         ProcessorState state = new ProcessState(32 * bits, endiannes);
         if (bits == 1) {
             sc.seek(16);
-            byte rest[] = new byte[36];
+            byte[] rest = new byte[36];
             sc.readFully(rest);
             ByteBuffer bb = ByteBuffer.wrap(rest).order(order);
             assert (b.getShort() == 2); // supporting only exec
@@ -84,7 +84,7 @@ public class Main {
                 ph.p_memsz  = sc.readInt();
                 ph.p_flags  = sc.readInt();
                 ph.p_align  = sc.readInt();
-                state.addSecgment(ph);
+                state.addSegment(ph);
             }
         }
         return state;

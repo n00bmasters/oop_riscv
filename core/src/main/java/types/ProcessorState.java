@@ -13,7 +13,7 @@ public class ProcessorState {
     public ProcessorState(int xlen, int endian) {
         this.xlen = xlen;
         this.endian = endian; // 1 - little, 2 - big
-        this.mem = Memory(xlen);
+        this.mem = new Memory(xlen);
         RVWord.setXlen(xlen);
         initRegisters();
     }

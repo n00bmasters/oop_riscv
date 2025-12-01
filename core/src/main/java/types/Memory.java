@@ -6,10 +6,10 @@ import java.jutils.ArrayList;
 public class Memory{
     private List<Section> sections = new ArrayList<>();
     private List<Segment> segments = new ArrayList<>();
-    private int xlen;
+    private final int xlen;
 
-    public Memory(int xlen) {
-        this.xlen = xlen;
+    public Memory(int bits) {
+        this.xlen = bits;
     }
 
     public void addSection(Section section){
@@ -33,6 +33,6 @@ public class Memory{
     }
 
     public RVWord readMemory(RVWord address) {
-
+        return null;
     }
 }
