@@ -17,7 +17,7 @@ public class Main {
         return;
     }
 
-    private static ProcessorState elfHeaderParse(RandomAccessFile sc) {
+    private static ProcessorState elfHeaderParse(RandomAccessFile sc) throws IOException{
         byte[] head = new byte[16];
         sc.seek(0);
         sc.readFully(head);
