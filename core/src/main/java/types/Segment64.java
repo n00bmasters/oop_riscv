@@ -1,12 +1,12 @@
 package types;
 
 public class Segment64 implements Segment {
-    int p_type;
-    int p_offset;
-    long p_vaddr;
-    long p_paddr;
-    long p_filesz;
-    long p_memsz;
-    long p_flags;
-    long p_align;
+    public int p_type;
+    public int p_offset;
+    public long p_vaddr;
+    public long p_paddr;
+    public long p_filesz;
+    public long p_memsz;
+    public long p_flags;
+    public long p_align;
 }

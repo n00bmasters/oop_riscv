@@ -30,6 +30,14 @@ public class ProcessorState {
         return mem.getSection(ind);
     }
 
+    public int getSectionCount(){
+        return mem.sections.size();
+    }
+
+    public int getSegmentCount(){
+        return mem.segments.size();
+    }
+
     public Segment addSegment(int ind){
         return mem.getSegment(ind);
     }

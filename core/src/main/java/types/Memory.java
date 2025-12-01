@@ -4,8 +4,8 @@ import java.util.List;
 import java.util.ArrayList;
 
 public class Memory{
-    private List<Section> sections = new ArrayList<>();
-    private List<Segment> segments = new ArrayList<>();
+    List<Section> sections = new ArrayList<>();
+    List<Segment> segments = new ArrayList<>();
     private final int xlen;
 
     public Memory(int bits) {

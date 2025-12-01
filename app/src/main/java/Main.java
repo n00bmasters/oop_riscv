@@ -1,6 +1,9 @@
 import java.math.BigInteger;
 import java.util.List;
 import java.util.ArrayList;
+import java.nio.ByteBuffer;
+import java.nio.ByteOrder;
+import java.nio.charset.StandardCharsets;
 import java.io.RandomAccessFile;
 import java.io.File;
 import java.io.IOException;
@@ -17,20 +20,20 @@ public class Main {
     private static ProcessorState elfHeaderParse(RandomAccessFile sc) {
         byte[] head = new byte[16];
         sc.seek(0);
-        raf.readFully(head);
+        sc.readFully(head);
         if (head[0] != 0x7F || head[1] != 'E' || head[2] != 'L' || head[3] != 'F') {
             System.err.println("Not an ELF file");
             System.exit(1);
         }
         int bits = head[4] & 0xFF;
         int endiannes = head[5] & 0xFF;
-        ByteOrder order = (ei_data == 1) ? ByteOrder.LITTLE_ENDIAN : ByteOrder.BIG_ENDIAN;  // ball knowledge
-        ProcessorState state = new ProcessState(32 * bits, endiannes);
+        ByteOrder order = (endiannes == 1) ? ByteOrder.LITTLE_ENDIAN : ByteOrder.BIG_ENDIAN;  // ball knowledge
+        ProcessorState state = new ProcessorState(32 * bits, endiannes);
         if (bits == 1) {
             sc.seek(16);
             byte[] rest = new byte[36];
             sc.readFully(rest);
-            ByteBuffer bb = ByteBuffer.wrap(rest).order(order);
+            ByteBuffer b = ByteBuffer.wrap(rest).order(order);
             assert (b.getShort() == 2); // supporting only exec
             assert (b.getShort() == 0xf3); // riscv arch
             int ver = b.getInt();
@@ -63,14 +66,14 @@ public class Main {
                 int sh_entsize   = sb.getInt();
                 state.addSection(new Section32(sh_name, sh_type, sh_flags, sh_addr, sh_offset, sh_size, sh_link, sh_info, sh_addralign, sh_entsize));
             }
-            Section32 shstr = state.getSection(Short.toUnsignedInt(string_table));
+            Section32 shstr = (Section32) state.getSection(Short.toUnsignedInt(string_table));
             byte[] strtab = new byte[shstr.sh_size];
             sc.seek(Integer.toUnsignedLong(shstr.sh_offset));
             sc.readFully(strtab);
-            for (int i = 0; i < sections.size(); i++) {
-                Section32 tmp_s = state.getSection(i);
+            for (int i = 0; i < state.getSectionCount(); i++) {
+                Section32 tmp_s = (Section32) state.getSection(i);
                 String name = (strtab == null) ? "" : readStringAt(strtab, tmp_s.sh_name); //check
-                tmp_s.setName(name);
+                tmp_s.name = name;
             } // section part finished, not sure for what purpose but whtvr
 
             sc.seek(Integer.toUnsignedLong(head_offs));
