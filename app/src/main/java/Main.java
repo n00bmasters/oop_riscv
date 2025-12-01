@@ -73,9 +73,21 @@ public class Main {
                 tmp_s.setName(name);
             } // section part finished, not sure for what purpose but whtvr
 
-            sc.seek(head_offs);
-            Byte
+            sc.seek(Integer.toUnsignedLong(head_offs));
+            for (short i = 0; i < head_num; i++) {
+                Segment32 ph = new Segment32();
+                ph.p_type   = sc.readInt();
+                ph.p_offset = sc.readInt();
+                ph.p_vaddr  = sc.readInt();
+                ph.p_paddr  = sc.readInt();
+                ph.p_filesz = sc.readInt();
+                ph.p_memsz  = sc.readInt();
+                ph.p_flags  = sc.readInt();
+                ph.p_align  = sc.readInt();
+                state.addSecgment(ph);
+            }
         }
+        return state;
     }
 
     private static String readStringAt(byte[] table, int offset) {

@@ -6,7 +6,7 @@ import java.jutils.ArrayList;
 public class Memory{
     private List<Section> sections = new ArrayList<>();
     private List<Segment> segments = new ArrayList<>();
-    private xlen;
+    private int xlen;
 
     public Memory(int xlen) {
         this.xlen = xlen;
@@ -26,5 +26,13 @@ public class Memory{
 
     public Segment addSegment(int ind){
         return segments.get(ind);
+    }
+
+    public void writeMemory(RVWord address, RVWord value){
+
+    }
+
+    public RVWord readMemory(RVWord address) {
+
     }
 }

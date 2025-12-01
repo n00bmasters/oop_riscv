@@ -14,7 +14,7 @@ public class Segment32 implements Segment {
     int p_align;
 }
 
-public class Segment32 implements Segment {
+public class Segment64 implements Segment {
     int p_type;
     int p_offset;
     long p_vaddr;
