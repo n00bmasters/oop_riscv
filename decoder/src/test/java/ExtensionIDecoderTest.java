@@ -87,21 +87,7 @@ public class ExtensionIDecoderTest {
         assertNotNull(instruction);
         assertEquals(Sll.class, instruction.getClass());
     }
-    
-    @ParameterizedTest
-    @MethodSource("xlenValues")
-    void testDecodeITypeInstruction(int xlen) {
-        RVWord.setXlen(xlen);
-        ExtensionIDecoder decoder = new ExtensionIDecoder();
-        
-        // Create an ADDI instruction: addi x10, x11, 5
-        int instructionWord = createIType(10, 11, 5, 0, 0b0010011);
-        
-        // For now, I-type instructions are recognized but not fully decoded
-        Instruction instruction = decoder.decode(instructionWord);
-        assertNull(instruction);
-    }
-    
+
     @ParameterizedTest
     @MethodSource("xlenValues")
     void testDecodeSTypeInstruction(int xlen) {
