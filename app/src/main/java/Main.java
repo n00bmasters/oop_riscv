@@ -9,7 +9,7 @@ import types.*;
 
 public class Main {
 
-    private static void printState(ProcessorState) {
+    private static void printState(ProcessorState state) {
         // TODO
         return;
     }
