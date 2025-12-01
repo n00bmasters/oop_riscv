@@ -9,6 +9,12 @@ public class ProcessorState {
     private Memory mem;
     RVWord[] registers = new RVWord[32];
 
+    public ProcessorState(int xlen) {
+        this.xlen = xlen;
+        this.mem = new Memory(xlen);
+        RVWord.setXlen(xlen);
+        initRegisters();
+    }
 
     public ProcessorState(int xlen, int endian) {
         this.xlen = xlen;
