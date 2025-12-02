@@ -35,6 +35,6 @@ public class SubTest extends TestExtension {
         RVWord instructionWord = createRType(rd, rs1, rs2, 0, 0x20, 0b0110011);
         Instruction add = new Sub(instructionWord);
         add.execute(state);
-        assertEquals(BigInteger.valueOf(-50), getRegister(rd).getSignedValue());
+        assertEquals(BigInteger.valueOf(-50), getRegister(rd).getValue());
     }
 }

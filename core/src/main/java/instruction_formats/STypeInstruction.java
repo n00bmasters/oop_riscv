@@ -5,8 +5,8 @@ import types.ProcessorState;
 import types.RVWord;
 
 public abstract class STypeInstruction implements Instruction{
-    private int rs1, rs2;
-    private RVWord imm;
+    protected int rs1, rs2;
+    protected RVWord imm;
     public STypeInstruction(RVWord instructionWord) {
         rs1 = instructionWord.getBits(15, 19);
         rs2 = instructionWord.getBits(20, 24);

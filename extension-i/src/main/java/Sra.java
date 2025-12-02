@@ -14,7 +14,7 @@ public class Sra extends RTypeInstruction {
         RVWord rs1 = state.getRegister(this.rs1);
         RVWord rs2 = state.getRegister(this.rs2);
         int shift = rs2.getBits(0, 6);
-        RVWord res = new RVWord(rs1.getSignedValue()).shr(shift);
+        RVWord res = new RVWord(rs1.getValue()).shr(shift);
         state.setRegister(rd, res);
     }
 }

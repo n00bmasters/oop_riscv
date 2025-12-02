@@ -5,8 +5,8 @@ import types.ProcessorState;
 import types.RVWord;
 
 public abstract class JTypeInstruction implements Instruction {
-    private int rd;
-    private RVWord imm;
+    protected int rd;
+    protected RVWord imm;
     public JTypeInstruction(RVWord instructionWord) {
         rd = instructionWord.getBits(7, 11);
         int imm20 = instructionWord.getBits(31, 31);

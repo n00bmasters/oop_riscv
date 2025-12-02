@@ -5,8 +5,8 @@ import types.ProcessorState;
 import types.RVWord;
 
 public abstract class UTypeInstruction implements Instruction{
-    private int rd;
-    private RVWord imm;
+    protected int rd;
+    protected RVWord imm;
     public UTypeInstruction(RVWord instructionWord) {
         rd = instructionWord.getBits(7, 11);
         imm = new RVWord(BigInteger.valueOf(instructionWord.getBits(12, 31))).signExtend(20);
