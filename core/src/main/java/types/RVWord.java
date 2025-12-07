@@ -56,6 +56,10 @@ public class RVWord {
         return new RVWord(this.value.shiftRight(value));
     }
 
+    public RVWord not() {
+        return new RVWord(this.value.not());
+    }
+
     public void trunc() {
         if (value.signum() == -1) {
             value = value.abs();
@@ -72,5 +76,18 @@ public class RVWord {
 
     public int getBits(int from, int to) {
         return value.shiftRight(from).and(BigInteger.valueOf((1 << (to - from + 1)) - 1)).intValue();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        RVWord other = (RVWord) o;
+        return value.equals(other.value);
+    }
+
+    @Override
+    public int hashCode() {
+        return value.hashCode();
     }
 }

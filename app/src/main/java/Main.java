@@ -9,7 +9,6 @@ import java.io.File;
 import java.io.IOException;
 import types.*;
 
-
 public class Main {
 
     private static void printState(ProcessorState state) {
@@ -47,8 +46,8 @@ public class Main {
             assert(b.getShort() == 40); // section header entry size 32 bit
             short sect_num = b.getShort();
             short string_table = b.getShort();
-
-            for (short i = 0; i < head_num; i++) {
+            
+            for (short i = 0; i < sect_num; i++) {
                 long sect_offs_real = Integer.toUnsignedLong(sect_offs) + (long) i * 40;
                 sc.seek(sect_offs_real);
                 byte[] sh = new byte[40];
@@ -75,22 +74,58 @@ public class Main {
                 String name = (strtab == null) ? "" : readStringAt(strtab, tmp_s.sh_name); //check
                 tmp_s.name = name;
             } // section part finished, not sure for what purpose but whtvr
-
+            
             sc.seek(Integer.toUnsignedLong(head_offs));
+            byte[] phData = new byte[head_num * 32];
+            sc.readFully(phData);
+            
+            ByteBuffer phBuf = ByteBuffer.wrap(phData).order(order);
             for (short i = 0; i < head_num; i++) {
                 Segment32 ph = new Segment32();
-                ph.p_type   = sc.readInt();
-                ph.p_offset = sc.readInt();
-                ph.p_vaddr  = sc.readInt();
-                ph.p_paddr  = sc.readInt();
-                ph.p_filesz = sc.readInt();
-                ph.p_memsz  = sc.readInt();
-                ph.p_flags  = sc.readInt();
-                ph.p_align  = sc.readInt();
+                ph.p_type   = phBuf.getInt();
+                ph.p_offset = phBuf.getInt();
+                ph.p_vaddr  = phBuf.getInt();
+                ph.p_paddr  = phBuf.getInt();
+                ph.p_filesz = phBuf.getInt();
+                ph.p_memsz  = phBuf.getInt();
+                ph.p_flags  = phBuf.getInt();
+                ph.p_align  = phBuf.getInt();
                 state.addSegment(ph);
             }
         }
         return state;
+    }
+
+    private static void loadSegments(ProcessorState state, RandomAccessFile raf) throws IOException {
+        int count = state.getSegmentCount(); 
+        System.out.println(count);
+        for (int i = 0; i < count; i++) {
+            Segment seg = state.getSegment(i);
+            if (seg.p_type == 1) {
+                long startPage = seg.p_vaddr & ~0xFFFL;
+                long endAddr = seg.p_vaddr + seg.p_memsz;
+
+                for (long a = startPage; a < endAddr; a += 4096) {
+                    RVWord pageAddr = new RVWord(BigInteger.valueOf(a));
+                    state.mapPage(pageAddr, seg.p_flags);
+                }
+
+                raf.seek(seg.p_offset);
+                byte[] data = new byte[(int) seg.p_filesz];
+                raf.readFully(data);
+
+                for (int j = 0; j < data.length; j++) {
+                    RVWord addr = new RVWord(BigInteger.valueOf(seg.p_vaddr + j));
+                    state.initByte(addr, data[j]);
+                }
+
+                for (long j = seg.p_filesz; j < seg.p_memsz; j++) {
+                    RVWord addr = new RVWord(BigInteger.valueOf(seg.p_vaddr + j));
+                    state.initByte(addr, (byte) 0);
+                }
+                
+            }
+        }
     }
 
     private static String readStringAt(byte[] table, int offset) {
@@ -100,7 +135,6 @@ public class Main {
         return new String(table, offset, i - offset, StandardCharsets.UTF_8);
     }
 
-
     public static void main(String[] args) throws IOException {
         if (args.length != 1) {
             System.err.println("Usage: java Main <program_filename>");
@@ -108,9 +142,12 @@ public class Main {
         }
         File file = new File(args[0]);
         try (RandomAccessFile raf = new RandomAccessFile(file, "r")) {
-            elfHeaderParse(raf);
+            RVWord.setXlen(32);
+            ProcessorState state = elfHeaderParse(raf);
+            loadSegments(state, raf);
+            state.dumpMemory("dump.txt");
+            
         }
-
         // RVWord testWord = new RVWord(BigInteger.valueOf(32));
         // System.out.printf("types.RVWord xlen = %d\n", testWord.getXlen());
     }

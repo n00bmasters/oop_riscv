@@ -1,8 +1,6 @@
 package types;
 
-public class Segment64 implements Segment {
-    public int p_type;
-    public int p_offset;
+public class Segment64 extends Segment {
     public long p_vaddr;
     public long p_paddr;
     public long p_filesz;

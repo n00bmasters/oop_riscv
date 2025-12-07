@@ -1,6 +1,7 @@
 package types;
 
 import java.math.BigInteger;
+import java.io.IOException;
 
 public class ProcessorState {
 
@@ -44,7 +45,7 @@ public class ProcessorState {
         return mem.segments.size();
     }
 
-    public Segment addSegment(int ind){
+    public Segment getSegment(int ind){
         return mem.getSegment(ind);
     }
 
@@ -56,8 +57,20 @@ public class ProcessorState {
         return registers[index];
     }
 
+    public Page mapPage(RVWord vaddr, int flags) {
+        return mem.mapPage(vaddr, flags);
+    }
+
+    public void initByte(RVWord startAddr, byte data) {
+        mem.initBytes(startAddr, data);
+    }
+
     public void setRegister(int index, RVWord result) {
         if (index == 0) return;
         registers[index] = result;
+    }
+
+    public void dumpMemory(String filename) {
+        try { mem.dumpToFile(filename); } catch (IOException e) {}
     }
 }
