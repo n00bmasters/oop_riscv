@@ -11,9 +11,9 @@ public class ProcessorState {
     RVWord[] registers = new RVWord[32];
 
     public ProcessorState(int xlen) {
+        RVWord.setXlen(xlen);
         this.xlen = xlen;
         this.mem = new Memory(xlen);
-        RVWord.setXlen(xlen);
         initRegisters();
     }
 

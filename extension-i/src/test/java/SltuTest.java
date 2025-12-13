@@ -10,7 +10,7 @@ public class SltuTest extends TestExtension {
 
     @ParameterizedTest
     @MethodSource("TestExtension#xlenValues")
-    void testLargeShift(int xlen) {
+    void test(int xlen) {
         BigInteger rs1Value = BigInteger.valueOf(-100L);
         BigInteger rs2Value = BigInteger.valueOf(5);
         setup(xlen);
@@ -22,7 +22,7 @@ public class SltuTest extends TestExtension {
         int instructionWord = createRType(rd, rs1, rs2, 0x6, 0x20, 0b0110011);
         Instruction add = new Sltu(instructionWord);
         add.execute(state);
-        BigInteger expected = (rs1Value.compareTo(rs2Value) < 0) ? BigInteger.ONE : BigInteger.ZERO;
+        BigInteger expected = (rs1Value.abs().compareTo(rs2Value) < 0) ? BigInteger.ONE : BigInteger.ZERO;
         BigInteger actual = getRegister(rd).getValue();
         assertEquals(expected, actual);
     }

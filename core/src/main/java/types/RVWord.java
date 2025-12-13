@@ -11,27 +11,37 @@ public class RVWord {
         trunc();
     }
 
-    public RVWord signExtend(int currentLen) {
-        int signBit = value.shiftRight(currentLen - 1).and(BigInteger.ONE).intValue();
-        if (signBit == 1) {
-            BigInteger res = value;
-            while (currentLen != xlen) {
-                res = res.setBit(currentLen++);
-            }
-            return new RVWord(res);
-        } else return new RVWord(value);
+    public static BigInteger getMask() {
+        return BigInteger.ONE.shiftLeft(xlen).subtract(BigInteger.ONE);
+    }
+
+    public void trunc() {
+        this.value = this.value.and(getMask());
+    }
+
+    public BigInteger getSignedValue() {
+        if (value.testBit(xlen - 1)) {
+            return value.subtract(BigInteger.ONE.shiftLeft(xlen));
+        }
+        return value;
+    }
+
+    public RVWord signExtend(int fromLen) {
+        BigInteger truncated = this.value.and(getMask());
+
+        if (truncated.testBit(fromLen - 1)) {
+            BigInteger extended = truncated.subtract(BigInteger.ONE.shiftLeft(fromLen));
+            return new RVWord(extended);
+        }
+        return new RVWord(truncated);
     }
 
     public RVWord add(RVWord other) {
-        RVWord res = new RVWord(value.add(other.value));
-        res.trunc();
-        return res;
+        return new RVWord(value.add(other.value));
     }
 
     public RVWord sub(RVWord other) {
-        RVWord res = new RVWord(value.subtract(other.value));
-        res.trunc();
-        return res;
+        return new RVWord(value.subtract(other.value));
     }
 
     public RVWord xor(RVWord other) {
@@ -46,26 +56,22 @@ public class RVWord {
         return new RVWord(value.and(other.value));
     }
 
-    public RVWord shl(int value) {
-        RVWord res = new RVWord(this.value.shiftLeft(value));
-        res.trunc();
-        return res;
-    }
-
-    public RVWord shr(int value) {
-        return new RVWord(this.value.shiftRight(value));
-    }
-
     public RVWord not() {
         return new RVWord(this.value.not());
     }
 
-    public void trunc() {
-        if (value.signum() == -1) {
-            value = value.abs();
-            value = value.and(BigInteger.ONE.shiftLeft(xlen).subtract(BigInteger.ONE)).negate();
-        } else
-            value = value.and(BigInteger.ONE.shiftLeft(xlen).subtract(BigInteger.ONE));
+    public RVWord shl(int shift) {
+        return new RVWord(this.value.shiftLeft(shift));
+    }
+
+    public RVWord srl(int shift) {
+        return new RVWord(this.value.shiftRight(shift));
+    }
+
+    public RVWord sra(int shift) {
+        if (shift == 0) return new RVWord(this.value);
+        BigInteger signed = getSignedValue();
+        return new RVWord(signed.shiftRight(shift));
     }
 
     public BigInteger getValue() { return value; }

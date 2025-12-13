@@ -10,7 +10,7 @@ public class SltTest extends TestExtension {
 
     @ParameterizedTest
     @MethodSource("TestExtension#xlenValues")
-    void testLargeShift(int xlen) {
+    void test(int xlen) {
         BigInteger rs1Value = BigInteger.valueOf(-100L);
         BigInteger rs2Value = BigInteger.valueOf(5);
         setup(xlen);
