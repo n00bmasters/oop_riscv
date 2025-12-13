@@ -19,7 +19,7 @@ public class SltuTest extends TestExtension {
         int rs2 = 12;
         setRegister(rs1, rs1Value);
         setRegister(rs2, rs2Value);
-        RVWord instructionWord = createRType(rd, rs1, rs2, 0x6, 0x20, 0b0110011);
+        int instructionWord = createRType(rd, rs1, rs2, 0x6, 0x20, 0b0110011);
         Instruction add = new Sltu(instructionWord);
         add.execute(state);
         BigInteger expected = (rs1Value.compareTo(rs2Value) < 0) ? BigInteger.ONE : BigInteger.ZERO;

@@ -4,7 +4,7 @@ import types.RVWord;
 
 public class Or extends RTypeInstruction {
 
-    public Or(RVWord instructionWord) {
+    public Or(int instructionWord) {
         super(instructionWord);
     }
 

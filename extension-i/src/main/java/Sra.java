@@ -5,7 +5,7 @@ import types.RVWord;
 
 public class Sra extends RTypeInstruction {
 
-    public Sra(RVWord instructionWord) {
+    public Sra(int instructionWord) {
         super(instructionWord);
     }
 

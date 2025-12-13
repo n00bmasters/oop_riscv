@@ -22,7 +22,7 @@ public abstract class TestExtension {
         return state.getRegister(index);
     }
 
-    protected RVWord createRType(int rd, int rs1, int rs2, int funct3, int funct7, int opcode) {
+    protected int createRType(int rd, int rs1, int rs2, int funct3, int funct7, int opcode) {
         int word = 0;
         word |= (opcode & 0x7F);
         word |= (rd & 0x1F) << 7;
@@ -30,16 +30,27 @@ public abstract class TestExtension {
         word |= (rs1 & 0x1F) << 15;
         word |= (rs2 & 0x1F) << 20;
         word |= (funct7 & 0x7F) << 25;
-        return new RVWord(BigInteger.valueOf(word));
+        return word;
     }
 
-    protected RVWord createIType(int rd, int rs1, RVWord imm, int funct3, int opcode) {
+    protected int createIType(int rd, int rs1, int imm, int funct3, int opcode) {
         int word = 0;
         word |= (opcode & 0x7F);
         word |= (rd & 0x1F) << 7;
         word |= (funct3 & 0x07) << 12;
         word |= (rs1 & 0x1F) << 15;
-        word |= (imm.getValue().intValue() & 0xFFF) << 20;
-        return new RVWord(BigInteger.valueOf(word));
+        word |= (imm & 0xFFF) << 20;
+        return word;
+    }
+
+    protected int createSType(int rs1, int rs2, int imm, int funct3, int opcode) {
+        int word = 0;
+        word |= (opcode & 0x7F);
+        word |= (imm & 0x1F) << 7;  // imm[4:0]
+        word |= (funct3 & 0x07) << 12;
+        word |= (rs1 & 0x1F) << 15;
+        word |= (rs2 & 0x1F) << 20;
+        word |= ((imm >> 5) & 0x7F) << 25;  // imm[11:5]
+        return word;
     }
 }

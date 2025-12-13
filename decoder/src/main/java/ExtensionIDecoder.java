@@ -1,16 +1,16 @@
 import instruction_formats.Instruction;
-import types.RVWord;
+
+import static types.Utils.getBits;
 
 
 public class ExtensionIDecoder implements ExtensionDecoder {
     @Override
     public Instruction decode(int instructionWord) {
-        RVWord word = new RVWord(java.math.BigInteger.valueOf(instructionWord));
-        int opcode = word.getBits(0, 6);
+        int opcode = getBits(instructionWord, 0, 6);
         
         switch (opcode) {
             case 0b0110011: // R-type instructions
-                return decodeRType(word);
+                return decodeRType(instructionWord);
             case 0b0010011: // I-type arithmetic instructions
                 return null;
             case 0b0000011: // I-type load instructions
@@ -34,53 +34,53 @@ public class ExtensionIDecoder implements ExtensionDecoder {
         }
     }
     
-    private Instruction decodeRType(RVWord word) {
-        int funct3 = word.getBits(12, 14);
-        int funct7 = word.getBits(25, 31);
+    private Instruction decodeRType(int instructionWord) {
+        int funct3 = getBits(instructionWord, 12, 14);
+        int funct7 = getBits(instructionWord, 25, 31);
         
         switch (funct3) {
             case 0b000:
                 if (funct7 == 0b0000000) {
-                    return new Add(word);
+                    return new Add(instructionWord);
                 } else if (funct7 == 0b0100000) {
-                    return new Sub(word);
+                    return new Sub(instructionWord);
                 }
                 break;
             case 0b001:
                 if (funct7 == 0b0000000) {
-                    return new Sll(word);
+                    return new Sll(instructionWord);
                 }
                 break;
             case 0b010:
                 if (funct7 == 0b0000000) {
-                    return new Slt(word);
+                    return new Slt(instructionWord);
                 }
                 break;
             case 0b011:
                 if (funct7 == 0b0000000) {
-                    return new Sltu(word);
+                    return new Sltu(instructionWord);
                 }
                 break;
             case 0b100:
                 if (funct7 == 0b0000000) {
-                    return new Xor(word);
+                    return new Xor(instructionWord);
                 }
                 break;
             case 0b101:
                 if (funct7 == 0b0000000) {
-                    return new Srl(word);
+                    return new Srl(instructionWord);
                 } else if (funct7 == 0b0100000) {
-                    return new Sra(word);
+                    return new Sra(instructionWord);
                 }
                 break;
             case 0b110:
                 if (funct7 == 0b0000000) {
-                    return new Or(word);
+                    return new Or(instructionWord);
                 }
                 break;
             case 0b111:
                 if (funct7 == 0b0000000) {
-                    return new And(word);
+                    return new And(instructionWord);
                 }
                 break;
         }

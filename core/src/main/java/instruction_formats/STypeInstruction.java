@@ -4,14 +4,16 @@ import java.math.BigInteger;
 import types.ProcessorState;
 import types.RVWord;
 
+import static types.Utils.getBits;
+
 public abstract class STypeInstruction implements Instruction{
     protected int rs1, rs2;
     protected RVWord imm;
-    public STypeInstruction(RVWord instructionWord) {
-        rs1 = instructionWord.getBits(15, 19);
-        rs2 = instructionWord.getBits(20, 24);
-        int imm4_0 = instructionWord.getBits(7, 11);
-        int imm11_5 = instructionWord.getBits(25, 31);
+    public STypeInstruction(int instructionWord) {
+        rs1 = getBits(instructionWord, 15, 19);
+        rs2 = getBits(instructionWord, 20, 24);
+        int imm4_0 = getBits(instructionWord, 7, 11);
+        int imm11_5 = getBits(instructionWord, 25, 31);
         int rawImm = (imm11_5 << 5) | imm4_0;
         imm = new RVWord(BigInteger.valueOf(rawImm)).signExtend(12);
     }

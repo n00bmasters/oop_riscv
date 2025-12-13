@@ -4,7 +4,7 @@ import types.RVWord;
 
 public class And extends RTypeInstruction {
 
-    public And(RVWord instructionWord) {
+    public And(int instructionWord) {
         super(instructionWord);
     }
 

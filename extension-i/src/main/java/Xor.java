@@ -4,7 +4,7 @@ import types.RVWord;
 
 public class Xor extends RTypeInstruction {
 
-    public Xor(RVWord instructionWord) {
+    public Xor(int instructionWord) {
         super(instructionWord);
     }
 

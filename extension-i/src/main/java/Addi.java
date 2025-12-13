@@ -4,7 +4,7 @@ import types.RVWord;
 
 public class Addi extends ITypeInstruction {
 
-    public Addi(RVWord instructionWord) {
+    public Addi(int instructionWord) {
         super(instructionWord);
     }
 

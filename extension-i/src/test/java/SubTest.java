@@ -17,7 +17,7 @@ public class SubTest extends TestExtension {
         int rs2 = 12;
         setRegister(rs1, BigInteger.valueOf(100));
         setRegister(rs2, BigInteger.valueOf(50));
-        RVWord instructionWord = createRType(rd, rs1, rs2, 0, 0x20, 0b0110011);
+        int instructionWord = createRType(rd, rs1, rs2, 0, 0x20, 0b0110011);
         Instruction add = new Sub(instructionWord);
         add.execute(state);
         assertEquals(BigInteger.valueOf(50), getRegister(rd).getValue());
@@ -32,7 +32,7 @@ public class SubTest extends TestExtension {
         int rs2 = 12;
         setRegister(rs1, BigInteger.valueOf(50));
         setRegister(rs2, BigInteger.valueOf(100));
-        RVWord instructionWord = createRType(rd, rs1, rs2, 0, 0x20, 0b0110011);
+        int instructionWord = createRType(rd, rs1, rs2, 0, 0x20, 0b0110011);
         Instruction add = new Sub(instructionWord);
         add.execute(state);
         assertEquals(BigInteger.valueOf(-50), getRegister(rd).getValue());

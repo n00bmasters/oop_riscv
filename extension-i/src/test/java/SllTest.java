@@ -19,7 +19,7 @@ public class SllTest extends TestExtension {
         int rs2 = 12;
         setRegister(rs1, rs1Value);
         setRegister(rs2, rs2Value);
-        RVWord instructionWord = createRType(rd, rs1, rs2, 0x6, 0, 0b0110011);
+        int instructionWord = createRType(rd, rs1, rs2, 0x6, 0, 0b0110011);
         Instruction add = new Sll(instructionWord);
         add.execute(state);
         BigInteger mask = BigInteger.ONE.shiftLeft(xlen).subtract(BigInteger.ONE);
