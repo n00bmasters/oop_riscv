@@ -1,19 +1,21 @@
+import instruction_formats.ITypeInstruction;
 import instruction_formats.RTypeInstruction;
 import types.ProcessorState;
 import types.RVWord;
 
 import java.math.BigInteger;
 
-public class Srl extends RTypeInstruction {
+public class Sraiw extends ITypeInstruction {
 
-    public Srl(int instructionWord) {
+    public Sraiw(int instructionWord) {
         super(instructionWord);
     }
 
     @Override
     public void execute(ProcessorState state) {
         RVWord rs1 = state.getRegister(this.rs1);
-        RVWord rs2 = state.getRegister(this.rs2);
-        state.setRegister(rd, rs1.srl(rs2.getBits(0, 4)));
+        RVWord res = rs1.signExtend(32);
+        res = res.sra(imm.getBits(0, 4));
+        state.setRegister(rd, res.signExtend(32));
     }
 }

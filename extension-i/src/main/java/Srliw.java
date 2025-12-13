@@ -1,0 +1,22 @@
+import instruction_formats.ITypeInstruction;
+import instruction_formats.RTypeInstruction;
+import types.ProcessorState;
+import types.RVWord;
+
+import java.math.BigInteger;
+
+public class Srliw extends ITypeInstruction {
+
+    public Srliw(int instructionWord) {
+        super(instructionWord);
+    }
+
+    @Override
+    public void execute(ProcessorState state) {
+        RVWord rs1 = state.getRegister(this.rs1);
+        BigInteger mask = BigInteger.ONE.shiftLeft(32).subtract(BigInteger.ONE);
+        RVWord res = rs1.and(new RVWord(mask));
+        res = res.srl(imm.getBits(0, 4));
+        state.setRegister(rd, res.signExtend(32));
+    }
+}

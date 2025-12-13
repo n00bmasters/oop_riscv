@@ -13,8 +13,6 @@ public class Srli extends ITypeInstruction {
     @Override
     public void execute(ProcessorState state) {
         RVWord rs1 = state.getRegister(this.rs1);
-        RVWord mask = new RVWord(BigInteger.ONE.shiftLeft(RVWord.getXlen()).subtract(BigInteger.ONE));
-        rs1 = rs1.and(mask);
-        state.setRegister(rd, rs1.srl(imm.getBits(0, 6)));
+        state.setRegister(rd, rs1.srl(imm.getBits(0, 4)));
     }
 }

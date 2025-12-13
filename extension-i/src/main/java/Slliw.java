@@ -1,17 +1,17 @@
 import instruction_formats.ITypeInstruction;
+import instruction_formats.RTypeInstruction;
 import types.ProcessorState;
 import types.RVWord;
 
-public class Srai extends ITypeInstruction {
+public class Slliw extends ITypeInstruction {
 
-    public Srai(int instructionWord) {
+    public Slliw(int instructionWord) {
         super(instructionWord);
     }
 
     @Override
     public void execute(ProcessorState state) {
         RVWord rs1 = state.getRegister(this.rs1);
-        RVWord res = rs1.srl(imm.getBits(0, 4));
-        state.setRegister(rd, res);
+        state.setRegister(rd, rs1.shl(imm.getBits(0, 4)).signExtend(32));
     }
 }

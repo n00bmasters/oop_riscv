@@ -12,7 +12,7 @@ public class Sra extends RTypeInstruction {
     public void execute(ProcessorState state) {
         RVWord rs1 = state.getRegister(this.rs1);
         RVWord rs2 = state.getRegister(this.rs2);
-        RVWord res = rs1.sra(rs2.getBits(0, 6));
+        RVWord res = rs1.sra(rs2.getBits(0, 4));
         state.setRegister(rd, res);
     }
 }

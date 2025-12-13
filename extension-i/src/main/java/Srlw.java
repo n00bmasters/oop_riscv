@@ -4,9 +4,9 @@ import types.RVWord;
 
 import java.math.BigInteger;
 
-public class Srl extends RTypeInstruction {
+public class Srlw extends RTypeInstruction {
 
-    public Srl(int instructionWord) {
+    public Srlw(int instructionWord) {
         super(instructionWord);
     }
 
@@ -14,6 +14,9 @@ public class Srl extends RTypeInstruction {
     public void execute(ProcessorState state) {
         RVWord rs1 = state.getRegister(this.rs1);
         RVWord rs2 = state.getRegister(this.rs2);
-        state.setRegister(rd, rs1.srl(rs2.getBits(0, 4)));
+        BigInteger mask = BigInteger.ONE.shiftLeft(32).subtract(BigInteger.ONE);
+        RVWord res = rs1.and(new RVWord(mask));
+        res = res.srl(rs2.getBits(0, 4));
+        state.setRegister(rd, res.signExtend(32));
     }
 }

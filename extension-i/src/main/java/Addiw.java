@@ -2,16 +2,15 @@ import instruction_formats.ITypeInstruction;
 import types.ProcessorState;
 import types.RVWord;
 
-public class Srai extends ITypeInstruction {
+public class Addiw extends ITypeInstruction {
 
-    public Srai(int instructionWord) {
+    public Addiw(int instructionWord) {
         super(instructionWord);
     }
 
     @Override
     public void execute(ProcessorState state) {
         RVWord rs1 = state.getRegister(this.rs1);
-        RVWord res = rs1.srl(imm.getBits(0, 4));
-        state.setRegister(rd, res);
+        state.setRegister(rd, rs1.add(imm).signExtend(32));
     }
 }
