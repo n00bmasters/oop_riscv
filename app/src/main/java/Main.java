@@ -184,9 +184,13 @@ public class Main {
             state.dumpMemory("dump.txt");
             
             InstructionDecoder decoder = new InstructionDecoder();
-            for (int step = 0; step < 100; step++) {
+            for (;;) {
                 int instrWord = state.fetchInstruction();
                 Instruction instr = decoder.decode(instrWord);
+                if (instr == null) {
+                    System.err.print("Unknown instruction, likely program has ended\n");
+                    System.exit(0);
+                }
                 instr.execute(state);
                 state.setPC(state.getPC().add(new RVWord(BigInteger.valueOf(4))));
                 printState(state);
