@@ -115,16 +115,6 @@ public class Memory{
         page.rawWrite(offset, val);
     }
 
-    public byte readByte(RVWord vaddr) {
-        RVWord pageKey = vaddr.and(pageMask);
-        int offset = vaddr.and(offsetMask).getValue().intValue();
-        Page page = this.pages.get(pageKey);
-        if (page == null) {
-            return 0; // or throw exception
-        }
-        return page.rawRead(offset);
-    }
-
     public void dumpToFile(String filename) throws IOException {
     try (PrintWriter writer = new PrintWriter(new FileWriter(filename))) {
         for (var entry : pages.entrySet()) {
