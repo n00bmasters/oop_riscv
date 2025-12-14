@@ -1,10 +1,10 @@
 package types;
 
 
-public abstract class Segment {
+public class Segment {
     public int p_type;
     public int p_flags;
-    public int p_offset;
+    public long p_offset;
     public long p_vaddr;
     public long p_paddr;
     public long p_filesz;

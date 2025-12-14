@@ -15,7 +15,6 @@ public class Main {
         // TODO
         return;
     }
-/*
     private static ProcessorState elfHeaderParse(RandomAccessFile sc) throws IOException{
         byte[] head = new byte[16];
         sc.seek(0);
@@ -36,14 +35,15 @@ public class Main {
         assert (b.getShort() == 2); // supporting only exec
         assert (b.getShort() == 0xf3); // riscv arch
         int ver = b.getInt();
+        long entr, head_offs, sect_offs;
         if (bits == 1) {
-            long entr = Integer.toUnsignedLong(b.getInt()); // long in 64
-            long head_offs = Integer.toUnsignedLong(b.getInt()); // long in 64
-            long sect_offs = Integer.toUnsignedLong(b.getInt()); // long in 64
+            entr = Integer.toUnsignedLong(b.getInt()); // long in 64
+            head_offs = Integer.toUnsignedLong(b.getInt()); // long in 64
+            sect_offs = Integer.toUnsignedLong(b.getInt()); // long in 64
         } else {
-            long entr = b.getLong();
-            long head_offs = b.getLong();
-            long sect_offs = b.getLong();
+            entr = b.getLong();
+            head_offs = b.getLong();
+            sect_offs = b.getLong();
         }
         int flags = b.getInt(); // should be checked for unsupported bs
         short headSize = b.getShort(); // 32 bit elf header
@@ -54,72 +54,71 @@ public class Main {
         short string_table = b.getShort();
         
         for (short i = 0; i < sect_num; i++) {
-            long sect_offs_real = Integer.toUnsignedLong(sect_offs) + (long) i * sectionHeadSize;
+            long sect_offs_real = sect_offs + (long) i * sectionHeadSize;
             sc.seek(sect_offs_real);
             byte[] sh = new byte[sectionHeadSize];
             sc.readFully(sh);
             ByteBuffer sb = ByteBuffer.wrap(sh).order(order);
             int sh_name   = sb.getInt();
-            int sh_type   = sb.getInt(); 
+            int sh_type   = sb.getInt();
+            long sh_flags, sh_addr, sh_offset, sh_size;
             if (bits == 1) {
-                long sh_flags  = Integer.toUnsignedLong(sb.getInt()); // 8 in 64
-                long sh_addr   = Integer.toUnsignedLong(sb.getInt()); // 8 in 64
-                long sh_offset = Integer.toUnsignedLong(sb.getInt()); // 8 in 64
-                long sh_size   = Integer.toUnsignedLong(sb.getInt()); // 8 in 64
+                sh_flags  = Integer.toUnsignedLong(sb.getInt()); // 8 in 64
+                sh_addr   = Integer.toUnsignedLong(sb.getInt()); // 8 in 64
+                sh_offset = Integer.toUnsignedLong(sb.getInt()); // 8 in 64
+                sh_size   = Integer.toUnsignedLong(sb.getInt()); // 8 in 64
             } else {
-                long sh_flags  = sb.getLong();
-                long sh_addr   = sb.getLong();
-                long sh_offset = sb.getLong();
-                long sh_size   = sb.getLong();
+                sh_flags  = sb.getLong();
+                sh_addr   = sb.getLong();
+                sh_offset = sb.getLong();
+                sh_size   = sb.getLong();
             }
             int sh_link   = sb.getInt();
             int sh_info   = sb.getInt();
+            long sh_addralign, sh_entsize;
             if (bits == 1) {
-                long sh_addralign = Integer.toUnsignedLong(sb.getInt()); // 8 in 64
-                long sh_entsize   = Integer.toUnsignedLong(sb.getInt()); // 8 in 64
+                sh_addralign = Integer.toUnsignedLong(sb.getInt()); // 8 in 64
+                sh_entsize   = Integer.toUnsignedLong(sb.getInt()); // 8 in 64
             } else {
-                long sh_addralign = sb.getlong();
-                long sh_entsize = sb.getLong();
+                sh_addralign = sb.getLong();
+                sh_entsize = sb.getLong();
             }
             state.addSection(new Section(sh_name, sh_type, sh_flags, sh_addr, sh_offset, sh_size, sh_link, sh_info, sh_addralign, sh_entsize));
         }
         Section shstr = state.getSection(Short.toUnsignedInt(string_table));
-        byte[] strtab = new byte[shstr.sh_size];
-        sc.seek(Integer.toUnsignedLong(shstr.sh_offset));
+        byte[] strtab = new byte[Math.toIntExact(shstr.sh_size)];
+        sc.seek(Integer.toUnsignedLong(Math.toIntExact(shstr.sh_offset)));
         sc.readFully(strtab);
         for (int i = 0; i < state.getSectionCount(); i++) {
-            Section32 tmp_s = (Section32) state.getSection(i);
-            String name = (strtab == null) ? "" : readStringAt(strtab, tmp_s.sh_name); //check
-            tmp_s.name = name == 2);
+            Section tmp_s = state.getSection(i);
+            tmp_s.name = readStringAt(strtab, tmp_s.sh_name); //check
         } // section part finished, needed for reading semgents
         
-        sc.seek(Integer.toUnsignedLong(head_offs));
+        sc.seek(Integer.toUnsignedLong(Math.toIntExact(head_offs)));
         byte[] phData = new byte[head_num * segHeadSize];
         sc.readFully(phData);
         
         ByteBuffer phBuf = ByteBuffer.wrap(phData).order(order);
         for (short i = 0; i < head_num; i++) {
-            Segment32 ph = new Segment();
+            Segment ph = new Segment();
             ph.p_type   = phBuf.getInt();
-            ph.p_offset = phBuf.getInt();
+            ph.p_flags = phBuf.getInt();
             if (bits == 1){
+                ph.p_offset = Integer.toUnsignedLong(phBuf.getInt());
                 ph.p_vaddr  = Integer.toUnsignedLong(phBuf.getInt()); // this and lower are 8 in 64
                 ph.p_paddr  = Integer.toUnsignedLong(phBuf.getInt());
                 ph.p_filesz = Integer.toUnsignedLong(phBuf.getInt());
                 ph.p_memsz  = Integer.toUnsignedLong(phBuf.getInt());
-                ph.p_flags  = Integer.toUnsignedLong(phBuf.getInt());
                 ph.p_align  = Integer.toUnsignedLong(phBuf.getInt());
             } else {
+                ph.p_offset  = phBuf.getLong();
                 ph.p_vaddr  = phBuf.getLong();
                 ph.p_paddr  = phBuf.getLong();
                 ph.p_filesz = phBuf.getLong();
                 ph.p_memsz  = phBuf.getLong();
-                ph.p_flags  = phBuf.getLong();
                 ph.p_align  = phBuf.getLong();
             }
             state.addSegment(ph);
-        }
-    
         }
         return state;
     }
@@ -179,5 +178,4 @@ public class Main {
         // RVWord testWord = new RVWord(BigInteger.valueOf(32));
         // System.out.printf("types.RVWord xlen = %d\n", testWord.getXlen());
     }
-*/
 }
