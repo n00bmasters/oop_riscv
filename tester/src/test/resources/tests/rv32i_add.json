@@ -1,0 +1,29 @@
+[
+  {
+    "name": "ADD basic",
+    "mnemonic": "ADD",
+    "xlen": 32,
+    "instruction_hex": "0x002081B3",
+    "regs_in": {
+      "1": "10",
+      "2": "20"
+    },
+    "regs_out": {
+      "3": "30"
+    }
+  },
+
+  {
+    "name": "ADD negative",
+    "mnemonic": "ADD",
+    "xlen": 32,
+    "instruction_hex": "0x002081B3",
+    "regs_in": {
+      "1": "-5",
+      "2": "2"
+    },
+    "regs_out": {
+      "3": "-3"
+    }
+  }
+]

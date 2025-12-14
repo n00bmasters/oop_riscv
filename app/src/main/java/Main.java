@@ -15,7 +15,7 @@ public class Main {
         // TODO
         return;
     }
-
+/*
     private static ProcessorState elfHeaderParse(RandomAccessFile sc) throws IOException{
         byte[] head = new byte[16];
         sc.seek(0);
@@ -179,4 +179,5 @@ public class Main {
         // RVWord testWord = new RVWord(BigInteger.valueOf(32));
         // System.out.printf("types.RVWord xlen = %d\n", testWord.getXlen());
     }
+*/
 }

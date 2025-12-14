@@ -1,0 +1,9 @@
+dependencies {
+    testImplementation project(':core')
+    testImplementation project(':extension-i')
+    testImplementation project(':decoder')
+}
+
+jar {
+    enabled = false
+}
