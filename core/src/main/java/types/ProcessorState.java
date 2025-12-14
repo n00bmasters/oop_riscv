@@ -45,6 +45,14 @@ public class ProcessorState {
         return mem.segments.size();
     }
 
+    public int getXlen() {
+        return xlen;
+    }
+
+    public int getEndian() {
+        return endian;
+    }
+
     public Segment getSegment(int ind){
         return mem.getSegment(ind);
     }

@@ -12,8 +12,14 @@ import types.*;
 public class Main {
 
     private static void printState(ProcessorState state) {
-        // TODO
-        return;
+        System.out.println("bits: " + state.getXlen());
+        System.out.println("endianness: " + (state.getEndian() == 1 ? "Little Endian" : "Big Endian"));
+        System.out.println("sections: " + state.getSectionCount());
+        System.out.println("segments: " + state.getSegmentCount());
+        System.out.println("registers:");
+        for (int i = 0; i < 32; i++) {
+            System.out.printf("x%-2d: 0x%s\n", i, state.getRegister(i).getValue().toString(16).toUpperCase());
+        }
     }
     private static ProcessorState elfHeaderParse(RandomAccessFile sc) throws IOException{
         byte[] head = new byte[16];
