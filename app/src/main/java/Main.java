@@ -28,70 +28,98 @@ public class Main {
         int endiannes = head[5] & 0xFF;
         ByteOrder order = (endiannes == 1) ? ByteOrder.LITTLE_ENDIAN : ByteOrder.BIG_ENDIAN;  // ball knowledge
         ProcessorState state = new ProcessorState(32 * bits, endiannes);
+
+        sc.seek(16);
+        byte[] rest = new byte[36];
+        sc.readFully(rest);
+        ByteBuffer b = ByteBuffer.wrap(rest).order(order);
+        assert (b.getShort() == 2); // supporting only exec
+        assert (b.getShort() == 0xf3); // riscv arch
+        int ver = b.getInt();
         if (bits == 1) {
-            sc.seek(16);
-            byte[] rest = new byte[36];
-            sc.readFully(rest);
-            ByteBuffer b = ByteBuffer.wrap(rest).order(order);
-            assert (b.getShort() == 2); // supporting only exec
-            assert (b.getShort() == 0xf3); // riscv arch
-            int ver = b.getInt();
-            int entr = b.getInt();
-            int head_offs = b.getInt();
-            int sect_offs = b.getInt();
-            int flags = b.getInt(); // should be checked for unsupported bs
-            assert (b.getShort() == 52); // 32 bit elf header
-            assert (b.getShort() == 32); // 32 bit program header
-            short head_num = b.getShort();
-            assert(b.getShort() == 40); // section header entry size 32 bit
-            short sect_num = b.getShort();
-            short string_table = b.getShort();
-            
-            for (short i = 0; i < sect_num; i++) {
-                long sect_offs_real = Integer.toUnsignedLong(sect_offs) + (long) i * 40;
-                sc.seek(sect_offs_real);
-                byte[] sh = new byte[40];
-                sc.readFully(sh);
-                ByteBuffer sb = ByteBuffer.wrap(sh).order(order);
-                int sh_name   = sb.getInt();
-                int sh_type   = sb.getInt();
-                int sh_flags  = sb.getInt();
-                int sh_addr   = sb.getInt();
-                int sh_offset = sb.getInt();
-                int sh_size   = sb.getInt();
-                int sh_link   = sb.getInt();
-                int sh_info   = sb.getInt();
-                int sh_addralign = sb.getInt();
-                int sh_entsize   = sb.getInt();
-                state.addSection(new Section32(sh_name, sh_type, sh_flags, sh_addr, sh_offset, sh_size, sh_link, sh_info, sh_addralign, sh_entsize));
+            long entr = Integer.toUnsignedLong(b.getInt()); // long in 64
+            long head_offs = Integer.toUnsignedLong(b.getInt()); // long in 64
+            long sect_offs = Integer.toUnsignedLong(b.getInt()); // long in 64
+        } else {
+            long entr = b.getLong();
+            long head_offs = b.getLong();
+            long sect_offs = b.getLong();
+        }
+        int flags = b.getInt(); // should be checked for unsupported bs
+        short headSize = b.getShort(); // 32 bit elf header
+        short segHeadSize = b.getShort() ; // 32 bit program header
+        short head_num = b.getShort();
+        short sectionHeadSize = b.getShort();
+        short sect_num = b.getShort();
+        short string_table = b.getShort();
+        
+        for (short i = 0; i < sect_num; i++) {
+            long sect_offs_real = Integer.toUnsignedLong(sect_offs) + (long) i * sectionHeadSize;
+            sc.seek(sect_offs_real);
+            byte[] sh = new byte[sectionHeadSize];
+            sc.readFully(sh);
+            ByteBuffer sb = ByteBuffer.wrap(sh).order(order);
+            int sh_name   = sb.getInt();
+            int sh_type   = sb.getInt(); 
+            if (bits == 1) {
+                long sh_flags  = Integer.toUnsignedLong(sb.getInt()); // 8 in 64
+                long sh_addr   = Integer.toUnsignedLong(sb.getInt()); // 8 in 64
+                long sh_offset = Integer.toUnsignedLong(sb.getInt()); // 8 in 64
+                long sh_size   = Integer.toUnsignedLong(sb.getInt()); // 8 in 64
+            } else {
+                long sh_flags  = sb.getLong();
+                long sh_addr   = sb.getLong();
+                long sh_offset = sb.getLong();
+                long sh_size   = sb.getLong();
             }
-            Section32 shstr = (Section32) state.getSection(Short.toUnsignedInt(string_table));
-            byte[] strtab = new byte[shstr.sh_size];
-            sc.seek(Integer.toUnsignedLong(shstr.sh_offset));
-            sc.readFully(strtab);
-            for (int i = 0; i < state.getSectionCount(); i++) {
-                Section32 tmp_s = (Section32) state.getSection(i);
-                String name = (strtab == null) ? "" : readStringAt(strtab, tmp_s.sh_name); //check
-                tmp_s.name = name;
-            } // section part finished, not sure for what purpose but whtvr
-            
-            sc.seek(Integer.toUnsignedLong(head_offs));
-            byte[] phData = new byte[head_num * 32];
-            sc.readFully(phData);
-            
-            ByteBuffer phBuf = ByteBuffer.wrap(phData).order(order);
-            for (short i = 0; i < head_num; i++) {
-                Segment32 ph = new Segment32();
-                ph.p_type   = phBuf.getInt();
-                ph.p_offset = phBuf.getInt();
-                ph.p_vaddr  = phBuf.getInt();
-                ph.p_paddr  = phBuf.getInt();
-                ph.p_filesz = phBuf.getInt();
-                ph.p_memsz  = phBuf.getInt();
-                ph.p_flags  = phBuf.getInt();
-                ph.p_align  = phBuf.getInt();
-                state.addSegment(ph);
+            int sh_link   = sb.getInt();
+            int sh_info   = sb.getInt();
+            if (bits == 1) {
+                long sh_addralign = Integer.toUnsignedLong(sb.getInt()); // 8 in 64
+                long sh_entsize   = Integer.toUnsignedLong(sb.getInt()); // 8 in 64
+            } else {
+                long sh_addralign = sb.getlong();
+                long sh_entsize = sb.getLong();
             }
+            state.addSection(new Section(sh_name, sh_type, sh_flags, sh_addr, sh_offset, sh_size, sh_link, sh_info, sh_addralign, sh_entsize));
+        }
+        Section shstr = state.getSection(Short.toUnsignedInt(string_table));
+        byte[] strtab = new byte[shstr.sh_size];
+        sc.seek(Integer.toUnsignedLong(shstr.sh_offset));
+        sc.readFully(strtab);
+        for (int i = 0; i < state.getSectionCount(); i++) {
+            Section32 tmp_s = (Section32) state.getSection(i);
+            String name = (strtab == null) ? "" : readStringAt(strtab, tmp_s.sh_name); //check
+            tmp_s.name = name == 2);
+        } // section part finished, needed for reading semgents
+        
+        sc.seek(Integer.toUnsignedLong(head_offs));
+        byte[] phData = new byte[head_num * segHeadSize];
+        sc.readFully(phData);
+        
+        ByteBuffer phBuf = ByteBuffer.wrap(phData).order(order);
+        for (short i = 0; i < head_num; i++) {
+            Segment32 ph = new Segment();
+            ph.p_type   = phBuf.getInt();
+            ph.p_offset = phBuf.getInt();
+            if (bits == 1){
+                ph.p_vaddr  = Integer.toUnsignedLong(phBuf.getInt()); // this and lower are 8 in 64
+                ph.p_paddr  = Integer.toUnsignedLong(phBuf.getInt());
+                ph.p_filesz = Integer.toUnsignedLong(phBuf.getInt());
+                ph.p_memsz  = Integer.toUnsignedLong(phBuf.getInt());
+                ph.p_flags  = Integer.toUnsignedLong(phBuf.getInt());
+                ph.p_align  = Integer.toUnsignedLong(phBuf.getInt());
+            } else {
+                ph.p_vaddr  = phBuf.getLong();
+                ph.p_paddr  = phBuf.getLong();
+                ph.p_filesz = phBuf.getLong();
+                ph.p_memsz  = phBuf.getLong();
+                ph.p_flags  = phBuf.getLong();
+                ph.p_align  = phBuf.getLong();
+            }
+            state.addSegment(ph);
+        }
+    
         }
         return state;
     }

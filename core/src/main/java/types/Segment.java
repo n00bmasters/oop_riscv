@@ -5,10 +5,11 @@ public abstract class Segment {
     public int p_type;
     public int p_flags;
     public int p_offset;
-    public int p_vaddr;
-    public int p_paddr;
-    public int p_filesz;
-    public int p_memsz;
-    public int p_align;
+    public long p_vaddr;
+    public long p_paddr;
+    public long p_filesz;
+    public long p_memsz;
+    public long p_flags;
+    public long p_align;
 }
 
