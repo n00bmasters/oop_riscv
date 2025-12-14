@@ -12,7 +12,7 @@ public abstract class ITypeInstruction implements Instruction{
     public ITypeInstruction(int instructionWord) {
         rd = getBits(instructionWord, 7, 11);
         rs1 = getBits(instructionWord, 15, 19);
-        imm = new RVWord(BigInteger.valueOf(getBits(instructionWord, 20, 24))).signExtend(12);
+        imm = new RVWord(BigInteger.valueOf(getBits(instructionWord, 20, 31))).signExtend(12);
     }
     public abstract void execute(ProcessorState state);
 }
