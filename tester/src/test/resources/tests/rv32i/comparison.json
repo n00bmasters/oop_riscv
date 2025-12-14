@@ -1,0 +1,153 @@
+[
+  {
+    "name": "SLT (Set Less Than) - True case",
+    "mnemonic": "SLT",
+    "xlen": 32,
+    "instruction_hex": "0x0020A1B3",
+    "regs_in": {
+      "1": "10",
+      "2": "20"
+    },
+    "regs_out": {
+      "3": "1"
+    }
+  },
+  {
+    "name": "SLT - False case",
+    "mnemonic": "SLT",
+    "xlen": 32,
+    "instruction_hex": "0x0020A1B3",
+    "regs_in": {
+      "1": "20",
+      "2": "10"
+    },
+    "regs_out": {
+      "3": "0"
+    }
+  },
+  {
+    "name": "SLT - Equal values (False)",
+    "mnemonic": "SLT",
+    "xlen": 32,
+    "instruction_hex": "0x0020A1B3",
+    "regs_in": {
+      "1": "10",
+      "2": "10"
+    },
+    "regs_out": {
+      "3": "0"
+    }
+  },
+  {
+    "name": "SLT - Signed comparison: negative < positive",
+    "mnemonic": "SLT",
+    "xlen": 32,
+    "instruction_hex": "0x0020A1B3",
+    "regs_in": {
+      "1": "-5",
+      "2": "5"
+    },
+    "regs_out": {
+      "3": "1"
+    }
+  },
+  {
+    "name": "SLT - Signed comparison: positive > negative",
+    "mnemonic": "SLT",
+    "xlen": 32,
+    "instruction_hex": "0x0020A1B3",
+    "regs_in": {
+      "1": "5",
+      "2": "-5"
+    },
+    "regs_out": {
+      "3": "0"
+    }
+  },
+  {
+    "name": "SLTU (Unsigned) - -1 is MAX_UINT > 1",
+    "mnemonic": "SLTU",
+    "xlen": 32,
+    "instruction_hex": "0x0020B1B3",
+    "regs_in": {
+      "1": "-1",
+      "2": "1"
+    },
+    "regs_out": {
+      "3": "0"
+    }
+  },
+  {
+    "name": "SLTU (Unsigned) - Small positive < Large positive (as unsigned)",
+    "mnemonic": "SLTU",
+    "xlen": 32,
+    "instruction_hex": "0x0020B1B3",
+    "regs_in": {
+      "1": "1",
+      "2": "-1"
+    },
+    "regs_out": {
+      "3": "1"
+    }
+  },
+  {
+    "name": "SLTI (Immediate) - True",
+    "mnemonic": "SLTI",
+    "xlen": 32,
+    "instruction_hex": "0x00A0A193",
+    "regs_in": {
+      "1": "5"
+    },
+    "regs_out": {
+      "3": "1"
+    }
+  },
+  {
+    "name": "SLTI (Immediate) - False",
+    "mnemonic": "SLTI",
+    "xlen": 32,
+    "instruction_hex": "0x00A0A193",
+    "regs_in": {
+      "1": "15"
+    },
+    "regs_out": {
+      "3": "0"
+    }
+  },
+  {
+    "name": "SLTI (Immediate) - Compare with negative immediate",
+    "mnemonic": "SLTI",
+    "xlen": 32,
+    "instruction_hex": "0xFFF0A193",
+    "regs_in": {
+      "1": "-2"
+    },
+    "regs_out": {
+      "3": "1"
+    }
+  },
+  {
+    "name": "SLTIU (Unsigned Immediate) - Compare with 1",
+    "mnemonic": "SLTIU",
+    "xlen": 32,
+    "instruction_hex": "0x0010B193",
+    "regs_in": {
+      "1": "0"
+    },
+    "regs_out": {
+      "3": "1"
+    }
+  },
+  {
+    "name": "SLTIU (Unsigned Immediate) - Sign extension check",
+    "mnemonic": "SLTIU",
+    "xlen": 32,
+    "instruction_hex": "0xFFF0B193",
+    "regs_in": {
+      "1": "10"
+    },
+    "regs_out": {
+      "3": "1"
+    }
+  }
+]

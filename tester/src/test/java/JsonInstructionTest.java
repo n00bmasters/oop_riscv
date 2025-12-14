@@ -65,7 +65,7 @@ public class JsonInstructionTest {
         }
 
         // --- DECODE ---
-        int instructionWord = Integer.decode(test.instruction_hex);
+        int instructionWord = Integer.parseUnsignedInt(test.instruction_hex.replace("0x", ""), 16);
         InstructionDecoder decoder = new InstructionDecoder();
         Instruction instr = decoder.decode(instructionWord);
         String expectedMnemonic = test.mnemonic.toUpperCase();
@@ -80,6 +80,12 @@ public class JsonInstructionTest {
                 int reg = Integer.parseInt(regStr);
                 BigInteger expected = parseBigInt(expectedValStr);
                 BigInteger actual = state.getRegister(reg).getSignedValue();
+
+                BigInteger mask = RVWord.getMask();
+                expected = expected.and(mask);
+                if (expected.testBit(test.xlen - 1)) {
+                    expected = expected.subtract(BigInteger.ONE.shiftLeft(test.xlen));
+                }
 
                 assertEquals(expected, actual,
                         String.format("EXECUTION ERROR in file [%s]. Test: '%s'. Register x%d mismatch.", test.sourceFile, test.name, reg));

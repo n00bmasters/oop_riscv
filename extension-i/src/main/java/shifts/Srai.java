@@ -1,18 +1,19 @@
-package shift;
+package shifts;
 
 import instruction_formats.ITypeInstruction;
 import types.ProcessorState;
 import types.RVWord;
 
-public class Srli extends ITypeInstruction {
+public class Srai extends ITypeInstruction {
 
-    public Srli(int instructionWord) {
+    public Srai(int instructionWord) {
         super(instructionWord);
     }
 
     @Override
     public void execute(ProcessorState state) {
         RVWord rs1 = state.getRegister(this.rs1);
-        state.setRegister(rd, rs1.srl(imm.getBits(0, 4)));
+        RVWord res = rs1.sra(imm.getBits(0, 4));
+        state.setRegister(rd, res);
     }
 }

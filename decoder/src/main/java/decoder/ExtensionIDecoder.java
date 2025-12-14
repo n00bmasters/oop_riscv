@@ -2,7 +2,7 @@ package decoder;
 
 import instruction_formats.Instruction;
 import arithmetic.*;
-import shift.*;
+import shifts.*;
 import comparison.*;
 import logical.*;
 import static types.Utils.getBits;
@@ -126,7 +126,7 @@ public class ExtensionIDecoder implements ExtensionDecoder {
     
     private Instruction decodeITypeArithmetic(int instructionWord) {
         int funct3 = getBits(instructionWord, 12, 14);
-        int imm = getBits(instructionWord, 20, 24);
+        int funct7 = getBits(instructionWord, 25, 31);
         
         switch (funct3) {
             case 0b000: // addi
@@ -144,9 +144,9 @@ public class ExtensionIDecoder implements ExtensionDecoder {
             case 0b001: // slli
                 return new Slli(instructionWord);
             case 0b101: // srli, srai
-                if (imm == 0b00000) {
+                if (funct7 == 0x0) {
                     return new Srli(instructionWord);
-                } else if (imm == 0b10000) {
+                } else if (funct7 == 0x20) {
                     return new Srai(instructionWord);
                 }
                 break;

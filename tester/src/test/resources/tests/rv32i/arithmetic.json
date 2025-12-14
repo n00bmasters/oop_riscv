@@ -1,0 +1,130 @@
+[
+  {
+    "name": "ADD basic positive",
+    "mnemonic": "ADD",
+    "xlen": 32,
+    "instruction_hex": "0x002081B3",
+    "regs_in": {
+      "1": "10",
+      "2": "20"
+    },
+    "regs_out": {
+      "3": "30"
+    }
+  },
+  {
+    "name": "ADD with negative result",
+    "mnemonic": "ADD",
+    "xlen": 32,
+    "instruction_hex": "0x002081B3",
+    "regs_in": {
+      "1": "-15",
+      "2": "5"
+    },
+    "regs_out": {
+      "3": "-10"
+    }
+  },
+  {
+    "name": "ADD overflow (32-bit)",
+    "mnemonic": "ADD",
+    "xlen": 32,
+    "instruction_hex": "0x002081B3",
+    "regs_in": {
+      "1": "0x7FFFFFFF",
+      "2": "1"
+    },
+    "regs_out": {
+      "3": "0x80000000"
+    }
+  },
+  {
+    "name": "ADD overflow wrapping (32-bit)",
+    "mnemonic": "ADD",
+    "xlen": 32,
+    "instruction_hex": "0x002081B3",
+    "regs_in": {
+      "1": "0xFFFFFFFF",
+      "2": "1"
+    },
+    "regs_out": {
+      "3": "0"
+    }
+  },
+  {
+    "name": "ADD on 64-bit XLEN (no sign extension needed)",
+    "mnemonic": "ADD",
+    "xlen": 64,
+    "instruction_hex": "0x002081B3",
+    "regs_in": {
+      "1": "0x100000000",
+      "2": "0x200000000"
+    },
+    "regs_out": {
+      "3": "0x300000000"
+    }
+  },
+  {
+    "name": "SUB basic",
+    "mnemonic": "SUB",
+    "xlen": 32,
+    "instruction_hex": "0x402081B3",
+    "regs_in": {
+      "1": "100",
+      "2": "40"
+    },
+    "regs_out": {
+      "3": "60"
+    }
+  },
+  {
+    "name": "SUB to negative",
+    "mnemonic": "SUB",
+    "xlen": 32,
+    "instruction_hex": "0x402081B3",
+    "regs_in": {
+      "1": "10",
+      "2": "20"
+    },
+    "regs_out": {
+      "3": "-10"
+    }
+  },
+  {
+    "name": "SUB overflow (negative wrapping)",
+    "mnemonic": "SUB",
+    "xlen": 32,
+    "instruction_hex": "0x402081B3",
+    "regs_in": {
+      "1": "0x80000000",
+      "2": "1"
+    },
+    "regs_out": {
+      "3": "0x7FFFFFFF"
+    }
+  },
+  {
+    "name": "ADDI basic",
+    "mnemonic": "ADDI",
+    "xlen": 32,
+    "instruction_hex": "0x02A08193",
+    "regs_in": {
+      "1": "10"
+    },
+    "regs_out": {
+      "3": "52"
+    }
+  },
+  {
+    "name": "ADDI negative immediate",
+    "mnemonic": "ADDI",
+    "xlen": 32,
+    "instruction_hex": "0xFFF08193",
+    "regs_in": {
+      "1": "10"
+    },
+    "regs_out": {
+      "3": "9"
+    }
+  }
+]

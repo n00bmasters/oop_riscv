@@ -1,4 +1,4 @@
-package shift;
+package shifts;
 
 import instruction_formats.ITypeInstruction;
 import types.ProcessorState;

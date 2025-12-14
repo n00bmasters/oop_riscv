@@ -1,12 +1,12 @@
-package shift;
+package shifts;
 
 import instruction_formats.RTypeInstruction;
 import types.ProcessorState;
 import types.RVWord;
 
-public class Sllw extends RTypeInstruction {
+public class Srad extends RTypeInstruction {
 
-    public Sllw(int instructionWord) {
+    public Srad(int instructionWord) {
         super(instructionWord);
     }
 
@@ -14,6 +14,8 @@ public class Sllw extends RTypeInstruction {
     public void execute(ProcessorState state) {
         RVWord rs1 = state.getRegister(this.rs1);
         RVWord rs2 = state.getRegister(this.rs2);
-        state.setRegister(rd, rs1.shl(rs2.getBits(0, 4)).signExtend(32));
+        RVWord res = rs1.signExtend(64);
+        res = res.sra(rs2.getBits(0, 5));
+        state.setRegister(rd, res.signExtend(64));
     }
 }

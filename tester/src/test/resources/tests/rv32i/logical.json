@@ -1,0 +1,114 @@
+[
+  {
+    "name": "AND basic",
+    "mnemonic": "AND",
+    "xlen": 32,
+    "instruction_hex": "0x0020F1B3",
+    "regs_in": {
+      "1": "0x0000FFFF",
+      "2": "0x00FF00FF"
+    },
+    "regs_out": {
+      "3": "0x000000FF"
+    }
+  },
+  {
+    "name": "OR basic",
+    "mnemonic": "OR",
+    "xlen": 32,
+    "instruction_hex": "0x0020E1B3",
+    "regs_in": {
+      "1": "0x0000FFFF",
+      "2": "0xFFFF0000"
+    },
+    "regs_out": {
+      "3": "0xFFFFFFFF"
+    }
+  },
+  {
+    "name": "XOR basic (toggle bits)",
+    "mnemonic": "XOR",
+    "xlen": 32,
+    "instruction_hex": "0x0020C1B3",
+    "regs_in": {
+      "1": "0xFFFFFFFF",
+      "2": "0x0000FFFF"
+    },
+    "regs_out": {
+      "3": "0xFFFF0000"
+    }
+  },
+  {
+    "name": "XOR self (clear register)",
+    "mnemonic": "XOR",
+    "xlen": 32,
+    "instruction_hex": "0x0020C1B3",
+    "regs_in": {
+      "1": "0x12345678",
+      "2": "0x12345678"
+    },
+    "regs_out": {
+      "3": "0"
+    }
+  },
+  {
+    "name": "ANDI (Immediate) - Masking",
+    "mnemonic": "ANDI",
+    "xlen": 32,
+    "instruction_hex": "0x0FF0F193",
+    "regs_in": {
+      "1": "0xABCDEEFF"
+    },
+    "regs_out": {
+      "3": "0x000000FF"
+    }
+  },
+  {
+    "name": "ANDI - Sign extension check",
+    "mnemonic": "ANDI",
+    "xlen": 32,
+    "instruction_hex": "0xFFF0F193",
+    "regs_in": {
+      "1": "0x12345678"
+    },
+    "regs_out": {
+      "3": "0x12345678"
+    }
+  },
+  {
+    "name": "ORI (Immediate) - Set bits",
+    "mnemonic": "ORI",
+    "xlen": 32,
+    "instruction_hex": "0x0FF0E193",
+    "regs_in": {
+      "1": "0xF0000000"
+    },
+    "regs_out": {
+      "3": "0xF00000FF"
+    }
+  },
+  {
+    "name": "ORI - Sign extension check",
+    "mnemonic": "ORI",
+    "xlen": 32,
+    "instruction_hex": "0xFFF0E193",
+    "regs_in": {
+      "1": "0"
+    },
+    "regs_out": {
+      "3": "-1"
+    }
+  },
+  {
+    "name": "XORI (Immediate) - Toggle bits",
+    "mnemonic": "XORI",
+    "xlen": 32,
+    "instruction_hex": "0xFFF0C193",
+    "regs_in": {
+      "1": "0"
+    },
+    "regs_out": {
+      "3": "-1"
+    }
+  }
+]

@@ -1,0 +1,116 @@
+[
+  {
+    "name": "SLL basic (Shift Left Logical)",
+    "mnemonic": "SLL",
+    "xlen": 32,
+    "instruction_hex": "0x002091B3",
+    "regs_in": {
+      "1": "0x00000001",
+      "2": "0x00000004"
+    },
+    "regs_out": {
+      "3": "0x00000010"
+    }
+  },
+  {
+    "name": "SLL masking (shift amount > 31)",
+    "mnemonic": "SLL",
+    "xlen": 32,
+    "instruction_hex": "0x002091B3",
+    "regs_in": {
+      "1": "0x00000001",
+      "2": "0x00000021"
+    },
+    "regs_out": {
+      "3": "0x00000002"
+    }
+  },
+  {
+    "name": "SRL basic (Shift Right Logical)",
+    "mnemonic": "SRL",
+    "xlen": 32,
+    "instruction_hex": "0x0020D1B3",
+    "regs_in": {
+      "1": "0xFFFFFFFF",
+      "2": "0x00000001"
+    },
+    "regs_out": {
+      "3": "0x7FFFFFFF"
+    }
+  },
+  {
+    "name": "SRA basic (Shift Right Arithmetic)",
+    "mnemonic": "SRA",
+    "xlen": 32,
+    "instruction_hex": "0x4020D1B3",
+    "regs_in": {
+      "1": "0xFFFFFFFF",
+      "2": "0x00000001"
+    },
+    "regs_out": {
+      "3": "0xFFFFFFFF"
+    }
+  },
+  {
+    "name": "SRA vs SRL Check (Negative Value)",
+    "mnemonic": "SRA",
+    "xlen": 32,
+    "instruction_hex": "0x4020D1B3",
+    "regs_in": {
+      "1": "0x80000000",
+      "2": "0x00000001"
+    },
+    "regs_out": {
+      "3": "0xC0000000"
+    }
+  },
+  {
+    "name": "SLLI (Immediate) - Shift by 4",
+    "mnemonic": "SLLI",
+    "xlen": 32,
+    "instruction_hex": "0x00409193",
+    "regs_in": {
+      "1": "0x0000000F"
+    },
+    "regs_out": {
+      "3": "0x000000F0"
+    }
+  },
+  {
+    "name": "SRLI (Immediate) - Logical Shift by 4",
+    "mnemonic": "SRLI",
+    "xlen": 32,
+    "instruction_hex": "0x0040D193",
+    "regs_in": {
+      "1": "0xF0000000"
+    },
+    "regs_out": {
+      "3": "0x0F000000"
+    }
+  },
+  {
+    "name": "SRAI (Immediate) - Arithmetic Shift by 4",
+    "mnemonic": "SRAI",
+    "xlen": 32,
+    "instruction_hex": "0x4040D193",
+    "regs_in": {
+      "1": "0xF0000000"
+    },
+    "regs_out": {
+      "3": "0xFF000000"
+    }
+  },
+  {
+    "name": "SLL Max Shift (31 bits)",
+    "mnemonic": "SLL",
+    "xlen": 32,
+    "instruction_hex": "0x002091B3",
+    "regs_in": {
+      "1": "0x00000001",
+      "2": "0x0000001F"
+    },
+    "regs_out": {
+      "3": "0x80000000"
+    }
+  }
+]
