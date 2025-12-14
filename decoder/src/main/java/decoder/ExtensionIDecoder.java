@@ -156,7 +156,7 @@ public class ExtensionIDecoder implements ExtensionDecoder {
     
     private Instruction decodeITypeArithmetic64(int instructionWord) {
         int funct3 = getBits(instructionWord, 12, 14);
-        int imm = getBits(instructionWord, 20, 24);
+        int funct7 = getBits(instructionWord, 25, 31);
         
         switch (funct3) {
             case 0b000: // addiw
@@ -164,9 +164,9 @@ public class ExtensionIDecoder implements ExtensionDecoder {
             case 0b001: // slliw
                 return new Slliw(instructionWord);
             case 0b101: // srliw, sraiw
-                if (imm == 0b00000) {
+                if (funct7 == 0x0) {
                     return new Srliw(instructionWord);
-                } else if (imm == 0b01000) {  // Note: Different imm value for SRAIW
+                } else if (funct7 == 0x20) {  // Note: Different funct7 value for SRAIW
                     return new Sraiw(instructionWord);
                 }
                 break;

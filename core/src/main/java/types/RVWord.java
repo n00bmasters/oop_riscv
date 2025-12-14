@@ -27,7 +27,7 @@ public class RVWord {
     }
 
     public RVWord signExtend(int fromLen) {
-        BigInteger truncated = this.value.and(getMask());
+        BigInteger truncated = this.value.and(BigInteger.ONE.shiftLeft(fromLen).subtract(BigInteger.ONE));
 
         if (truncated.testBit(fromLen - 1)) {
             BigInteger extended = truncated.subtract(BigInteger.ONE.shiftLeft(fromLen));
