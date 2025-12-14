@@ -7,7 +7,9 @@ import java.nio.charset.StandardCharsets;
 import java.io.RandomAccessFile;
 import java.io.File;
 import java.io.IOException;
+import decoder.InstructionDecoder;
 import types.*;
+import instruction_formats.Instruction;
 
 public class Main {
 
@@ -126,6 +128,7 @@ public class Main {
             }
             state.addSegment(ph);
         }
+        state.setPC(new RVWord(BigInteger.valueOf(entr)));
         return state;
     }
 
@@ -180,6 +183,14 @@ public class Main {
             loadSegments(state, raf);
             state.dumpMemory("dump.txt");
             
+            InstructionDecoder decoder = new InstructionDecoder();
+            for (int step = 0; step < 100; step++) {
+                int instrWord = state.fetchInstruction();
+                Instruction instr = decoder.decode(instrWord);
+                instr.execute(state);
+                state.setPC(state.getPC().add(new RVWord(BigInteger.valueOf(4))));
+                printState(state);
+            }
         }
         // RVWord testWord = new RVWord(BigInteger.valueOf(32));
         // System.out.printf("types.RVWord xlen = %d\n", testWord.getXlen());

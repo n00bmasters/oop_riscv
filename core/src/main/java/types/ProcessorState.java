@@ -8,12 +8,14 @@ public class ProcessorState {
     private int xlen;
     private int endian;
     private Memory mem;
+    private RVWord pc;
     RVWord[] registers = new RVWord[32];
 
     public ProcessorState(int xlen) {
         RVWord.setXlen(xlen);
         this.xlen = xlen;
         this.mem = new Memory(xlen);
+        this.pc = new RVWord(BigInteger.ZERO);
         initRegisters();
     }
 
@@ -22,6 +24,7 @@ public class ProcessorState {
         this.endian = endian; // 1 - little, 2 - big
         this.mem = new Memory(xlen);
         RVWord.setXlen(xlen);
+        this.pc = new RVWord(BigInteger.ZERO);
         initRegisters();
     }
 
@@ -53,6 +56,14 @@ public class ProcessorState {
         return endian;
     }
 
+    public RVWord getPC() {
+        return pc;
+    }
+
+    public void setPC(RVWord pc) {
+        this.pc = pc;
+    }
+
     public Segment getSegment(int ind){
         return mem.getSegment(ind);
     }
@@ -80,5 +91,10 @@ public class ProcessorState {
 
     public void dumpMemory(String filename) {
         try { mem.dumpToFile(filename); } catch (IOException e) {}
+    }
+
+    public int fetchInstruction() {
+        RVWord word = mem.readMemory(pc, 4);
+        return word.getValue().intValue();
     }
 }
