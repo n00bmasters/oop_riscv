@@ -1,0 +1,29 @@
+[
+  {
+    "name": "ADDW basic",
+    "mnemonic": "ADDW",
+    "xlen": 64,
+    "instruction_hex": "0x002081BB",
+    "regs_in": {
+      "1": "10",
+      "2": "20"
+    },
+    "regs_out": {
+      "3": "30"
+    }
+  },
+
+  {
+    "name": "ADDW negative",
+    "mnemonic": "ADDW",
+    "xlen": 64,
+    "instruction_hex": "0x002081BB",
+    "regs_in": {
+      "1": "-5",
+      "2": "2"
+    },
+    "regs_out": {
+      "3": "-3"
+    }
+  }
+]

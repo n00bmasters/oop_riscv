@@ -14,6 +14,6 @@ public class Addw extends RTypeInstruction {
     public void execute(ProcessorState state) {
         RVWord rs1 = state.getRegister(this.rs1);
         RVWord rs2 = state.getRegister(this.rs2);
-        state.setRegister(rd, rs1.add(rs2).signExtend(32));
+        state.setRegister(rd, rs1.add(rs2).signExtend(64));
     }
 }

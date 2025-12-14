@@ -13,6 +13,6 @@ public class Addiw extends ITypeInstruction {
     @Override
     public void execute(ProcessorState state) {
         RVWord rs1 = state.getRegister(this.rs1);
-        state.setRegister(rd, rs1.add(imm).signExtend(32));
+        state.setRegister(rd, rs1.add(imm).signExtend(64));
     }
 }

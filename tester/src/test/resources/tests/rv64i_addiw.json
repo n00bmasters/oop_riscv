@@ -1,0 +1,27 @@
+[
+  {
+    "name": "ADDIW +1000",
+    "mnemonic": "ADDIW",
+    "xlen": 64,
+    "instruction_hex": "0x3E80819B",
+    "regs_in": {
+      "1": "10"
+    },
+    "regs_out": {
+      "3": "1010"
+    }
+  },
+
+  {
+    "name": "ADDIW +10 to negative",
+    "mnemonic": "ADDIW",
+    "xlen": 64,
+    "instruction_hex": "0x00A0819B",
+    "regs_in": {
+      "1": "-100"
+    },
+    "regs_out": {
+      "3": "-90"
+    }
+  }
+]

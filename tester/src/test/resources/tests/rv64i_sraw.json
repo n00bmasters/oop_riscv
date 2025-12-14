@@ -1,0 +1,29 @@
+[
+  {
+    "name": "SRAW basic",
+    "mnemonic": "SRAW",
+    "xlen": 64,
+    "instruction_hex": "0x4020D1BB",
+    "regs_in": {
+      "1": "20",
+      "2": "2"
+    },
+    "regs_out": {
+      "3": "5"
+    }
+  },
+
+  {
+    "name": "SRAW overhead",
+    "mnemonic": "SRAW",
+    "xlen": 64,
+    "instruction_hex": "0x4020D1BB",
+    "regs_in": {
+      "1": "20",
+      "2": "8"
+    },
+    "regs_out": {
+      "3": "0"
+    }
+  }
+]
