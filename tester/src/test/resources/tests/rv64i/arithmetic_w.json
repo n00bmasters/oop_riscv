@@ -1,1 +1,103 @@
-[]
+[
+  {
+    "name": "ADDW Basic",
+    "mnemonic": "ADDW",
+    "xlen": 64,
+    "instruction_hex": "0x002081BB",
+    "regs_in": {
+      "1": "1",
+      "2": "2"
+    },
+    "regs_out": {
+      "3": "3"
+    }
+  },
+  {
+    "name": "ADDW Overflow (Positive to Negative)",
+    "mnemonic": "ADDW",
+    "xlen": 64,
+    "instruction_hex": "0x002081BB",
+    "regs_in": {
+      "1": "0x7FFFFFFF",
+      "2": "1"
+    },
+    "regs_out": {
+      "3": "0xFFFFFFFF80000000"
+    }
+  },
+  {
+    "name": "ADDW Truncation (Ignore upper 32 bits of input)",
+    "mnemonic": "ADDW",
+    "xlen": 64,
+    "instruction_hex": "0x002081BB",
+    "regs_in": {
+      "1": "0xFFFFFFFF00000001",
+      "2": "0x0000000000000001"
+    },
+    "regs_out": {
+      "3": "2"
+    }
+  },
+  {
+    "name": "SUBW Basic",
+    "mnemonic": "SUBW",
+    "xlen": 64,
+    "instruction_hex": "0x402081BB",
+    "regs_in": {
+      "1": "5",
+      "2": "3"
+    },
+    "regs_out": {
+      "3": "2"
+    }
+  },
+  {
+    "name": "SUBW Negative Result",
+    "mnemonic": "SUBW",
+    "xlen": 64,
+    "instruction_hex": "0x402081BB",
+    "regs_in": {
+      "1": "0",
+      "2": "1"
+    },
+    "regs_out": {
+      "3": "0xFFFFFFFFFFFFFFFF"
+    }
+  },
+  {
+    "name": "ADDIW Basic",
+    "mnemonic": "ADDIW",
+    "xlen": 64,
+    "instruction_hex": "0x0010819B",
+    "regs_in": {
+      "1": "10"
+    },
+    "regs_out": {
+      "3": "11"
+    }
+  },
+  {
+    "name": "ADDIW Sign Extension",
+    "mnemonic": "ADDIW",
+    "xlen": 64,
+    "instruction_hex": "0xFFF0819B",
+    "regs_in": {
+      "1": "1"
+    },
+    "regs_out": {
+      "3": "0"
+    }
+  },
+  {
+    "name": "ADDIW Sign Extension Result",
+    "mnemonic": "ADDIW",
+    "xlen": 64,
+    "instruction_hex": "0xFFF0819B",
+    "regs_in": {
+      "1": "0"
+    },
+    "regs_out": {
+      "3": "0xFFFFFFFFFFFFFFFF"
+    }
+  }
+]

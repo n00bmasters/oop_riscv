@@ -1,1 +1,116 @@
-[]
+[
+  {
+    "name": "SLLW Basic",
+    "mnemonic": "SLLW",
+    "xlen": 64,
+    "instruction_hex": "0x002091BB",
+    "regs_in": {
+      "1": "1",
+      "2": "1"
+    },
+    "regs_out": {
+      "3": "2"
+    }
+  },
+  {
+    "name": "SLLW Sign Extension",
+    "mnemonic": "SLLW",
+    "xlen": 64,
+    "instruction_hex": "0x002091BB",
+    "regs_in": {
+      "1": "0x0000000040000000",
+      "2": "1"
+    },
+    "regs_out": {
+      "3": "0xFFFFFFFF80000000"
+    }
+  },
+  {
+    "name": "SLLW Masking (Shift by 33 is Shift by 1)",
+    "mnemonic": "SLLW",
+    "xlen": 64,
+    "instruction_hex": "0x002091BB",
+    "regs_in": {
+      "1": "1",
+      "2": "33"
+    },
+    "regs_out": {
+      "3": "2"
+    }
+  },
+  {
+    "name": "SRLW Basic (Zero extension)",
+    "mnemonic": "SRLW",
+    "xlen": 64,
+    "instruction_hex": "0x0020D1BB",
+    "regs_in": {
+      "1": "0xFFFFFFFFFFFFFFFF",
+      "2": "1"
+    },
+    "regs_out": {
+      "3": "0x000000007FFFFFFF"
+    }
+  },
+  {
+    "name": "SRAW Basic (Sign extension)",
+    "mnemonic": "SRAW",
+    "xlen": 64,
+    "instruction_hex": "0x4020D1BB",
+    "regs_in": {
+      "1": "0xFFFFFFFFFFFFFFFF",
+      "2": "1"
+    },
+    "regs_out": {
+      "3": "0xFFFFFFFFFFFFFFFF"
+    }
+  },
+  {
+    "name": "SRAW Positive Input (Result sign-extended from bit 31)",
+    "mnemonic": "SRAW",
+    "xlen": 64,
+    "instruction_hex": "0x4020D1BB",
+    "regs_in": {
+      "1": "0x0000000080000000",
+      "2": "1"
+    },
+    "regs_out": {
+      "3": "0xFFFFFFFFC0000000"
+    }
+  },
+  {
+    "name": "SLLIW (Immediate) Basic",
+    "mnemonic": "SLLIW",
+    "xlen": 64,
+    "instruction_hex": "0x0010919B",
+    "regs_in": {
+      "1": "1"
+    },
+    "regs_out": {
+      "3": "2"
+    }
+  },
+  {
+    "name": "SRLIW (Immediate) Basic",
+    "mnemonic": "SRLIW",
+    "xlen": 64,
+    "instruction_hex": "0x0010D19B",
+    "regs_in": {
+      "1": "0xFFFFFFFF"
+    },
+    "regs_out": {
+      "3": "0x7FFFFFFF"
+    }
+  },
+  {
+    "name": "SRAIW (Immediate) Basic",
+    "mnemonic": "SRAIW",
+    "xlen": 64,
+    "instruction_hex": "0x4010D19B",
+    "regs_in": {
+      "1": "0xFFFFFFFF"
+    },
+    "regs_out": {
+      "3": "0xFFFFFFFFFFFFFFFF"
+    }
+  }
+]
