@@ -4,19 +4,16 @@ import instruction_formats.ITypeInstruction;
 import types.ProcessorState;
 import types.RVWord;
 
-import java.math.BigInteger;
+public class Ld extends ITypeInstruction {
 
-public class Lhu extends ITypeInstruction {
-
-    public Lhu(int instructionWord) {
+    public Ld(int instructionWord) {
         super(instructionWord);
     }
 
     @Override
     public void execute(ProcessorState state) {
         RVWord rs1 = state.getRegister(this.rs1);
-        RVWord res = state.mem.readMemory(rs1.add(imm), 2);
-        res = res.and(new RVWord(BigInteger.ONE.shiftLeft(16).subtract(BigInteger.ONE)));
+        RVWord res = state.mem.readMemory(rs1.add(imm), 8).signExtend(64);
         state.setRegister(rd, res);
     }
 }

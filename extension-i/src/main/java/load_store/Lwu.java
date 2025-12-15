@@ -6,17 +6,17 @@ import types.RVWord;
 
 import java.math.BigInteger;
 
-public class Lhu extends ITypeInstruction {
+public class Lwu extends ITypeInstruction {
 
-    public Lhu(int instructionWord) {
+    public Lwu(int instructionWord) {
         super(instructionWord);
     }
 
     @Override
     public void execute(ProcessorState state) {
         RVWord rs1 = state.getRegister(this.rs1);
-        RVWord res = state.mem.readMemory(rs1.add(imm), 2);
-        res = res.and(new RVWord(BigInteger.ONE.shiftLeft(16).subtract(BigInteger.ONE)));
+        RVWord res = state.mem.readMemory(rs1.add(imm), 4);
+        res = res.and(new RVWord(BigInteger.ONE.shiftLeft(32).subtract(BigInteger.ONE)));
         state.setRegister(rd, res);
     }
 }
