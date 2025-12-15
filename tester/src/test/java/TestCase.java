@@ -9,6 +9,8 @@ public class TestCase {
     public String instruction_hex;
     public Map<String, String> regs_in;
     public Map<String, String> regs_out;
+    public Map<String, String> mem_in;
+    public Map<String, String> mem_out;
 
     @JsonIgnore
     public String sourceFile;

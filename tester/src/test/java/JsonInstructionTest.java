@@ -56,11 +56,28 @@ public class JsonInstructionTest {
 
         // --- SETUP ---
         ProcessorState state = new ProcessorState(test.xlen);
+
         if (test.regs_in != null) {
             test.regs_in.forEach((regStr, valStr) -> {
                 int reg = Integer.parseInt(regStr);
                 BigInteger val = parseBigInt(valStr);
                 state.setRegister(reg, new RVWord(val));
+            });
+        }
+
+        if (test.mem_in != null) {
+            test.mem_in.forEach((addrStr, valStr) -> {
+                BigInteger addr = parseBigInt(addrStr);
+                BigInteger val  = parseBigInt(valStr);
+                byte b = (byte) val.intValue();
+                state.mem.initBytes(new RVWord(addr), b);
+            });
+        }
+
+        if (test.mem_out != null && (test.mem_in == null || test.mem_in.isEmpty())) {
+            test.mem_out.forEach((addrStr, ignoredVal) -> {
+                BigInteger addr = parseBigInt(addrStr);
+                state.mem.mapPage(new RVWord(addr), 6);
             });
         }
 
@@ -89,6 +106,19 @@ public class JsonInstructionTest {
 
                 assertEquals(expected, actual,
                         String.format("EXECUTION ERROR in file [%s]. Test: '%s'. Register x%d mismatch.", test.sourceFile, test.name, reg));
+            });
+        }
+
+        if (test.mem_out != null) {
+            test.mem_out.forEach((addrStr, expectedValStr) -> {
+                BigInteger addr = parseBigInt(addrStr);
+                BigInteger expected = parseBigInt(expectedValStr);
+                RVWord word = state.mem.readMemory(new RVWord(addr), 1);
+                BigInteger actual = word.getSignedValue();
+
+                assertEquals(expected, actual,
+                        String.format("MEMORY ERROR in file [%s]. Test: '%s'. Address %s mismatch.",
+                                test.sourceFile, test.name, addrStr));
             });
         }
     }

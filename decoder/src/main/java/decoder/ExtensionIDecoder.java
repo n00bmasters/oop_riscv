@@ -2,10 +2,10 @@ package decoder;
 
 import instruction_formats.Instruction;
 import arithmetic.*;
+import load_store.*;
 import shifts.*;
 import comparison.*;
 import logical.*;
-import load_store.*;
 import static types.Utils.getBits;
 
 
@@ -29,8 +29,6 @@ public class ExtensionIDecoder implements ExtensionDecoder {
                 return decodeITypeArithmetic128(instructionWord);
             case 0b0000011: // I-type load instructions
                 return decodeITypeLoad(instructionWord);
-            case 0b0001111: // I-type load instructions
-                return decodeITypeLoad128(instructionWord);
             case 0b1100011: // B-type branch instructions
                 return decodeBType(instructionWord);
             case 0b1100111: // I-type jump instructions
@@ -239,26 +237,10 @@ public class ExtensionIDecoder implements ExtensionDecoder {
                 return new Lh(instructionWord);
             case 0b010: // lw
                 return new Lw(instructionWord);
-            case 0b011: // ld
-                return new Ld(instructionWord);
             case 0b100: // lbu
                 return new Lbu(instructionWord);
             case 0b101: // lhu
                 return new Lhu(instructionWord);
-            case 0b110: // lwu
-                return new Lwu(instructionWord);
-            case 0b111: // ldu
-                return new Ldu(instructionWord);
-        }
-        return null;
-    }
-
-    private Instruction decodeITypeLoad128(int instructionWord) {
-        int funct3 = getBits(instructionWord, 12, 14);
-        
-        switch (funct3) {
-            case 0b010: // lq
-                return new Lq(instructionWord);
         }
         return null;
     }
@@ -302,10 +284,6 @@ public class ExtensionIDecoder implements ExtensionDecoder {
                 return new Sh(instructionWord);
             case 0b010: // sw
                 return new Sw(instructionWord);
-            case 0b011: // sd
-                return new Sd(instructionWord);
-            case 0b100: // sq
-                return new Sq(instructionWord);
         }
         return null;
     }
