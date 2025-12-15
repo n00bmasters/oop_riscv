@@ -81,6 +81,11 @@ public class JsonInstructionTest {
             });
         }
 
+        if (test.pc_in != null) {
+            state.setPC(new RVWord(parseBigInt(test.pc_in)));
+        }
+
+
         // --- DECODE ---
         int instructionWord = Integer.parseUnsignedInt(test.instruction_hex.replace("0x", ""), 16);
         InstructionDecoder decoder = new InstructionDecoder();
@@ -120,6 +125,14 @@ public class JsonInstructionTest {
                         String.format("MEMORY ERROR in file [%s]. Test: '%s'. Address %s mismatch.",
                                 test.sourceFile, test.name, addrStr));
             });
+        }
+
+        if (test.pc_out != null) {
+            BigInteger expectedPC = parseBigInt(test.pc_out);
+            BigInteger actualPC = state.getPC().getValue();
+    
+            assertEquals(expectedPC, actualPC, 
+                String.format("PC MISMATCH in test '%s'.", test.name));
         }
     }
 

@@ -7,10 +7,13 @@ public class TestCase {
     public String mnemonic;
     public int xlen;
     public String instruction_hex;
+    public String pc_in;
+    public String pc_out;
     public Map<String, String> regs_in;
     public Map<String, String> regs_out;
     public Map<String, String> mem_in;
     public Map<String, String> mem_out;
+    
 
     @JsonIgnore
     public String sourceFile;

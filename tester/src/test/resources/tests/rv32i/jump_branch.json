@@ -1,1 +1,169 @@
-[]
+[
+  {
+    "name": "BEQ Worked (10 == 10)",
+    "mnemonic": "BEQ",
+    "xlen": 32,
+    "instruction_hex": "0x00208463",
+    "pc_in": "0x1000",
+    "regs_in": { "1": "10", "2": "10" },
+    "pc_out": "0x1008"
+  },
+  {
+    "name": "BEQ Not Worked (10 != 11)",
+    "mnemonic": "BEQ",
+    "xlen": 32,
+    "instruction_hex": "0x00208463",
+    "pc_in": "0x1000",
+    "regs_in": { "1": "10", "2": "11" },
+    "pc_out": "0x1000"
+  },
+  {
+    "name": "BNE Worked (10 != 11)",
+    "mnemonic": "BNE",
+    "xlen": 32,
+    "instruction_hex": "0x00209463",
+    "pc_in": "0x1000",
+    "regs_in": { "1": "10", "2": "11" },
+    "pc_out": "0x1008"
+  },
+  {
+    "name": "BNE Not Worked (10 == 10)",
+    "mnemonic": "BNE",
+    "xlen": 32,
+    "instruction_hex": "0x00209463",
+    "pc_in": "0x1000",
+    "regs_in": { "1": "10", "2": "10" },
+    "pc_out": "0x1000"
+  },
+  {
+    "name": "BLT Worked (-10 < 5)",
+    "mnemonic": "BLT",
+    "xlen": 32,
+    "instruction_hex": "0x0020C463",
+    "pc_in": "0x1000",
+    "regs_in": { "1": "-10", "2": "5" },
+    "pc_out": "0x1008"
+  },
+  {
+    "name": "BLT Not Worked (5 < -10 is false)",
+    "mnemonic": "BLT",
+    "xlen": 32,
+    "instruction_hex": "0x0020C463",
+    "pc_in": "0x1000",
+    "regs_in": { "1": "5", "2": "-10" },
+    "pc_out": "0x1000"
+  },
+  {
+    "name": "BGE Worked (5 >= -10)",
+    "mnemonic": "bge",
+    "xlen": 32,
+    "instruction_hex": "0x0020D463",
+    "pc_in": "0x1000",
+    "regs_in": { "1": "5", "2": "-10" },
+    "pc_out": "0x1008"
+  },
+  {
+    "name": "BGE Not Worked (-10 >= 5 is false)",
+    "mnemonic": "bge",
+    "xlen": 32,
+    "instruction_hex": "0x0020D463",
+    "pc_in": "0x1000",
+    "regs_in": { "1": "-10", "2": "5" },
+    "pc_out": "0x1000"
+  },
+  {
+    "name": "BLTU Worked (5 < MAX_UINT)",
+    "mnemonic": "BLTU",
+    "xlen": 32,
+    "instruction_hex": "0x0020E463",
+    "pc_in": "0x1000",
+    "regs_in": { "1": "5", "2": "-1" },
+    "pc_out": "0x1008"
+  },
+  {
+    "name": "BLTU Not Worked (MAX_UINT < 5 is false)",
+    "mnemonic": "BLTU",
+    "xlen": 32,
+    "instruction_hex": "0x0020E463",
+    "pc_in": "0x1000",
+    "regs_in": { "1": "-1", "2": "5" },
+    "pc_out": "0x1000"
+  },
+  {
+    "name": "BGEU Worked (MAX_UINT >= 5)",
+    "mnemonic": "BGEU",
+    "xlen": 32,
+    "instruction_hex": "0x0020F463",
+    "pc_in": "0x1000",
+    "regs_in": { "1": "-1", "2": "5" },
+    "pc_out": "0x1008"
+  },
+  {
+    "name": "BGEU Not Worked (5 >= MAX_UINT is false)",
+    "mnemonic": "BGEU",
+    "xlen": 32,
+    "instruction_hex": "0x0020F463",
+    "pc_in": "0x1000",
+    "regs_in": { "1": "5", "2": "-1" },
+    "pc_out": "0x1000"
+  },
+ {
+    "name": "JAL Forward",
+    "mnemonic": "jal",
+    "xlen": 32,
+    "instruction_hex": "0x001000EF", 
+    "pc_in": "0x1000",
+    "pc_out": "0x1800",
+    "regs_out": {
+      "1": "0x1004"
+    }
+  },
+  {
+    "name": "JAL Backward",
+    "mnemonic": "jal",
+    "xlen": 32,
+    "instruction_hex": "0xFFDFF06F",
+    "pc_in": "0x1004",
+    "pc_out": "0x1000",
+    "regs_out": {
+       "0": "0" 
+    }
+  },
+  {
+    "name": "JALR Basic",
+    "mnemonic": "jalr",
+    "xlen": 32,
+    "instruction_hex": "0x004100E7",
+    "pc_in": "0x1000",
+    "regs_in": {
+      "2": "0x2000"
+    },
+    "pc_out": "0x2004",
+    "regs_out": {
+      "1": "0x1004"
+    }
+  },
+  {
+    "name": "JALR LSB Masking",
+    "mnemonic": "jalr",
+    "xlen": 32,
+    "instruction_hex": "0x00110067",
+    "pc_in": "0x1000",
+    "regs_in": {
+      "2": "0x2000"
+    },
+    "pc_out": "0x2000"
+  },
+  {
+    "name": "JALR with Negative Offset",
+    "mnemonic": "jalr",
+    "xlen": 32,
+    "instruction_hex": "0xFFC10067",
+    "pc_in": "0x1000",
+    "regs_in": {
+      "2": "0x2000"
+    },
+    "pc_out": "0x1FFC"
+  }
+]
+
