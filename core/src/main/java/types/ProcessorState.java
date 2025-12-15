@@ -7,7 +7,7 @@ public class ProcessorState {
 
     private int xlen;
     private int endian;
-    private Memory mem;
+    public Memory mem;
     private RVWord pc;
     RVWord[] registers = new RVWord[32];
 
