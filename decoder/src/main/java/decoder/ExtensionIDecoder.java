@@ -5,6 +5,7 @@ import arithmetic.*;
 import shifts.*;
 import comparison.*;
 import logical.*;
+import load_store.*;
 import static types.Utils.getBits;
 
 
@@ -231,15 +232,15 @@ public class ExtensionIDecoder implements ExtensionDecoder {
         
         switch (funct3) {
             case 0b000: // lb
-                return null;
+                return new Lb(instructionWord);
             case 0b001: // lh
-                return null;
+                return new Lh(instructionWord);
             case 0b010: // lw
-                return null;
+                return new Lw(instructionWord);
             case 0b100: // lbu
-                return null;
+                return new Lbu(instructionWord);
             case 0b101: // lhu
-                return null;
+                return new Lhu(instructionWord);
         }
         return null;
     }
@@ -278,11 +279,11 @@ public class ExtensionIDecoder implements ExtensionDecoder {
         
         switch (funct3) {
             case 0b000: // sb
-                return null;
+                return new Sb(instructionWord);
             case 0b001: // sh
-                return null;
+                return new Sh(instructionWord);
             case 0b010: // sw
-                return null;
+                return new Sw(instructionWord);
         }
         return null;
     }
