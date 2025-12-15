@@ -33,6 +33,7 @@ public class Main {
         }
         int bits = head[4] & 0xFF;
         int endiannes = head[5] & 0xFF;
+        System.out.println("Bits: " + bits + ", Endian: " + endiannes);
         ByteOrder order = (endiannes == 1) ? ByteOrder.LITTLE_ENDIAN : ByteOrder.BIG_ENDIAN;  // ball knowledge
         ProcessorState state = new ProcessorState(32 * bits, endiannes);
 
@@ -40,8 +41,8 @@ public class Main {
         byte[] rest = new byte[36];
         sc.readFully(rest);
         ByteBuffer b = ByteBuffer.wrap(rest).order(order);
-        assert (b.getShort() == 2); // supporting only exec
-        assert (b.getShort() == 0xf3); // riscv arch
+        short type = b.getShort(); // supporting only exec
+        short machine = b.getShort(); // riscv arch
         int ver = b.getInt();
         long entr, head_offs, sect_offs;
         if (bits == 1) {
@@ -85,8 +86,13 @@ public class Main {
             int sh_info   = sb.getInt();
             long sh_addralign, sh_entsize;
             if (bits == 1) {
-                sh_addralign = Integer.toUnsignedLong(sb.getInt()); // 8 in 64
-                sh_entsize   = Integer.toUnsignedLong(sb.getInt()); // 8 in 64
+                if (sb.remaining() >= 8) {
+                    sh_addralign = Integer.toUnsignedLong(sb.getInt()); // 8 in 64
+                    sh_entsize   = Integer.toUnsignedLong(sb.getInt()); // 8 in 64
+                } else {
+                    sh_addralign = 0;
+                    sh_entsize = 0;
+                }
             } else {
                 sh_addralign = sb.getLong();
                 sh_entsize = sb.getLong();
@@ -110,13 +116,13 @@ public class Main {
         for (short i = 0; i < head_num; i++) {
             Segment ph = new Segment();
             ph.p_type   = phBuf.getInt();
-            ph.p_flags = phBuf.getInt();
             if (bits == 1){
                 ph.p_offset = Integer.toUnsignedLong(phBuf.getInt());
                 ph.p_vaddr  = Integer.toUnsignedLong(phBuf.getInt()); // this and lower are 8 in 64
                 ph.p_paddr  = Integer.toUnsignedLong(phBuf.getInt());
                 ph.p_filesz = Integer.toUnsignedLong(phBuf.getInt());
                 ph.p_memsz  = Integer.toUnsignedLong(phBuf.getInt());
+                ph.p_flags = phBuf.getInt();
                 ph.p_align  = Integer.toUnsignedLong(phBuf.getInt());
             } else {
                 ph.p_offset  = phBuf.getLong();
@@ -124,8 +130,10 @@ public class Main {
                 ph.p_paddr  = phBuf.getLong();
                 ph.p_filesz = phBuf.getLong();
                 ph.p_memsz  = phBuf.getLong();
+                ph.p_flags = (int) phBuf.getLong();
                 ph.p_align  = phBuf.getLong();
             }
+            System.out.println("  offset " + ph.p_offset + ", filesz " + ph.p_filesz + ", memsz " + ph.p_memsz + ", flags " + ph.p_flags);
             state.addSegment(ph);
         }
         state.setPC(new RVWord(BigInteger.valueOf(entr)));
