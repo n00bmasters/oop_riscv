@@ -6,6 +6,7 @@ import shifts.*;
 import comparison.*;
 import logical.*;
 import load_store.*;
+import branch.*;
 import static types.Utils.getBits;
 
 
@@ -268,17 +269,17 @@ public class ExtensionIDecoder implements ExtensionDecoder {
         
         switch (funct3) {
             case 0b000: // beq
-                return null;
+                return new Beq(instructionWord);
             case 0b001: // bne
-                return null;
+                return new Bne(instructionWord);
             case 0b100: // blt
-                return null;
+                return new Blt(instructionWord);
             case 0b101: // bge
-                return null;
+                return new Bge(instructionWord);
             case 0b110: // bltu
-                return null;
+                return new Bltu(instructionWord);
             case 0b111: // bgeu
-                return null;
+                return new Bgeu(instructionWord);
         }
         return null;
     }
@@ -287,7 +288,7 @@ public class ExtensionIDecoder implements ExtensionDecoder {
         int funct3 = getBits(instructionWord, 12, 14);
         
         if (funct3 == 0b000) {
-            return null;
+            return new Jalr(instructionWord);
         }
         return null;
     }
@@ -311,15 +312,15 @@ public class ExtensionIDecoder implements ExtensionDecoder {
     }
     
     private Instruction decodeJType(int instructionWord) {
-        return null;
+        return new Jal(instructionWord);
     }
     
     private Instruction decodeUTypeLUI(int instructionWord) {
-        return null;
+        return new Lui(instructionWord);
     }
     
     private Instruction decodeUTypeAUIPC(int instructionWord) {
-        return null;
+        return new Auipc(instructionWord);
     }
     
     private Instruction decodeITypeSystem(int instructionWord) {
