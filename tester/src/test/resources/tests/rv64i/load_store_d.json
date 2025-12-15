@@ -1,1 +1,130 @@
-[]
+[
+  {
+    "name": "LD basic (Load Doubleword)",
+    "mnemonic": "LD",
+    "xlen": 64,
+    "instruction_hex": "0x0000B183",
+    "regs_in": {
+      "1": "0x100"
+    },
+    "regs_out": {
+      "3": "0x1122334455667788"
+    },
+    "mem_in": {
+      "0x100": "0x88",
+      "0x101": "0x77",
+      "0x102": "0x66",
+      "0x103": "0x55",
+      "0x104": "0x44",
+      "0x105": "0x33",
+      "0x106": "0x22",
+      "0x107": "0x11"
+    },
+    "mem_out": {}
+  },
+  {
+    "name": "LD negative doubleword",
+    "mnemonic": "LD",
+    "xlen": 64,
+    "instruction_hex": "0x0000B183",
+    "regs_in": {
+      "1": "0x200"
+    },
+    "regs_out": {
+      "3": "0xFFFFFFFFFFFFFFFF"
+    },
+    "mem_in": {
+      "0x200": "0xFF",
+      "0x201": "0xFF",
+      "0x202": "0xFF",
+      "0x203": "0xFF",
+      "0x204": "0xFF",
+      "0x205": "0xFF",
+      "0x206": "0xFF",
+      "0x207": "0xFF"
+    },
+    "mem_out": {}
+  },
+  {
+    "name": "SD basic (Store Doubleword)",
+    "mnemonic": "SD",
+    "xlen": 64,
+    "instruction_hex": "0x0020B023",
+    "regs_in": {
+      "1": "0x100",
+      "2": "0xDEADBEEFCAFEBABE"
+    },
+    "regs_out": {},
+    "mem_in": {},
+    "mem_out": {
+      "0x100": "0xBE",
+      "0x101": "0xBA",
+      "0x102": "0xFE",
+      "0x103": "0xCA",
+      "0x104": "0xEF",
+      "0x105": "0xBE",
+      "0x106": "0xAD",
+      "0x107": "0xDE"
+    }
+  },
+  {
+    "name": "SD with offset",
+    "mnemonic": "SD",
+    "xlen": 64,
+    "instruction_hex": "0x0020B423",
+    "regs_in": {
+      "1": "0x300",
+      "2": "0x0102030405060708"
+    },
+    "regs_out": {},
+    "mem_in": {},
+    "mem_out": {
+      "0x308": "0x08",
+      "0x309": "0x07",
+      "0x30A": "0x06",
+      "0x30B": "0x05",
+      "0x30C": "0x04",
+      "0x30D": "0x03",
+      "0x30E": "0x02",
+      "0x30F": "0x01"
+    }
+  },
+  {
+    "name": "LWU zero-extend to 64",
+    "mnemonic": "LWU",
+    "xlen": 64,
+    "instruction_hex": "0x0000E183",
+    "regs_in": {
+      "1": "0x400"
+    },
+    "regs_out": {
+      "3": "0x00000000FFFFFFFF"
+    },
+    "mem_in": {
+      "0x400": "0xFF",
+      "0x401": "0xFF",
+      "0x402": "0xFF",
+      "0x403": "0xFF"
+    },
+    "mem_out": {}
+  },
+  {
+    "name": "LWU positive word",
+    "mnemonic": "LWU",
+    "xlen": 64,
+    "instruction_hex": "0x0000E183",
+    "regs_in": {
+      "1": "0x500"
+    },
+    "regs_out": {
+      "3": "0x0000000012345678"
+    },
+    "mem_in": {
+      "0x500": "0x78",
+      "0x501": "0x56",
+      "0x502": "0x34",
+      "0x503": "0x12"
+    },
+    "mem_out": {}
+  }
+]
