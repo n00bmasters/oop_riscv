@@ -1,1 +1,155 @@
-[]
+[
+  {
+    "name": "SW basic (Store Word)",
+    "mnemonic": "SW",
+    "xlen": 32,
+    "instruction_hex": "0x0020A223",
+    "regs_in": {
+      "1": "0x100",
+      "2": "0xDEADBEEF"
+    },
+    "regs_out": {},
+    "mem_in": {},
+    "mem_out": {
+      "0x104": "0xEF",
+      "0x105": "0xBE",
+      "0x106": "0xAD",
+      "0x107": "0xDE"
+    }
+  },
+  {
+    "name": "LW basic (Load Word)",
+    "mnemonic": "LW",
+    "xlen": 32,
+    "instruction_hex": "0x0040A183",
+    "regs_in": {
+      "1": "0x100"
+    },
+    "regs_out": {
+      "3": "0xDEADBEEF"
+    },
+    "mem_in": {
+      "0x104": "0xEF",
+      "0x105": "0xBE",
+      "0x106": "0xAD",
+      "0x107": "0xDE"
+    },
+    "mem_out": {}
+  },
+  {
+    "name": "LW sign extension to 64",
+    "mnemonic": "LW",
+    "xlen": 64,
+    "instruction_hex": "0x0000A183",
+    "regs_in": {
+      "1": "0x200"
+    },
+    "regs_out": {
+      "3": "0xFFFFFFFFFFFFFFFF"
+    },
+    "mem_in": {
+      "0x200": "0xFF",
+      "0x201": "0xFF",
+      "0x202": "0xFF",
+      "0x203": "0xFF"
+    },
+    "mem_out": {}
+  },
+  {
+    "name": "SH basic (Store Halfword)",
+    "mnemonic": "SH",
+    "xlen": 32,
+    "instruction_hex": "0x00209223",
+    "regs_in": {
+      "1": "0x100",
+      "2": "0x12345678"
+    },
+    "regs_out": {},
+    "mem_in": {},
+    "mem_out": {
+      "0x104": "0x78",
+      "0x105": "0x56"
+    }
+  },
+  {
+    "name": "LH negative halfword sign-extend",
+    "mnemonic": "LH",
+    "xlen": 32,
+    "instruction_hex": "0x00009183",
+    "regs_in": {
+      "1": "0x300"
+    },
+    "regs_out": {
+      "3": "0xFFFF8000"
+    },
+    "mem_in": {
+      "0x300": "0x00",
+      "0x301": "0x80"
+    },
+    "mem_out": {}
+  },
+  {
+    "name": "LHU unsigned halfword to 64",
+    "mnemonic": "LHU",
+    "xlen": 64,
+    "instruction_hex": "0x0000D183",
+    "regs_in": {
+      "1": "0x300"
+    },
+    "regs_out": {
+      "3": "0x0000000000008000"
+    },
+    "mem_in": {
+      "0x300": "0x00",
+      "0x301": "0x80"
+    },
+    "mem_out": {}
+  },
+  {
+    "name": "SB basic (Store Byte)",
+    "mnemonic": "SB",
+    "xlen": 32,
+    "instruction_hex": "0x00208223",
+    "regs_in": {
+      "1": "0x400",
+      "2": "0x123456AB"
+    },
+    "regs_out": {},
+    "mem_in": {},
+    "mem_out": {
+      "0x404": "0xAB"
+    }
+  },
+  {
+    "name": "LB negative byte sign-extend",
+    "mnemonic": "LB",
+    "xlen": 32,
+    "instruction_hex": "0x00008183",
+    "regs_in": {
+      "1": "0x500"
+    },
+    "regs_out": {
+      "3": "0xFFFFFFFF"
+    },
+    "mem_in": {
+      "0x500": "0xFF"
+    },
+    "mem_out": {}
+  },
+  {
+    "name": "LBU unsigned byte to 64",
+    "mnemonic": "LBU",
+    "xlen": 64,
+    "instruction_hex": "0x0000C183",
+    "regs_in": {
+      "1": "0x500"
+    },
+    "regs_out": {
+      "3": "0x00000000000000FF"
+    },
+    "mem_in": {
+      "0x500": "0xFF"
+    },
+    "mem_out": {}
+  }
+]
