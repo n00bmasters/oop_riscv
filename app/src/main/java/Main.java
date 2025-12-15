@@ -140,6 +140,19 @@ public class Main {
         return state;
     }
 
+    private static void initStack(ProcessorState state, RandomAccessFile raf) throws IOException {
+        RVWord stackPointer = new RVWord(java.math.BigInteger.valueOf(0x80000000));
+        int stackSize = 0x10000;
+        RVWord pageSizeWord = new RVWord(java.math.BigInteger.valueOf(4096));
+        RVWord currentAddr = stackPointer.sub(new RVWord(java.math.BigInteger.valueOf(stackSize)));
+        while (!currentAddr.equals(stackPointer)) {
+            state.mapPage(currentAddr, 6); 
+            currentAddr = currentAddr.add(pageSizeWord);
+        }
+        state.setRegister(2, stackPointer);
+        System.out.println("SP: 0x" + stackPointer.getValue().toString(16));
+    } 
+
     private static void loadSegments(ProcessorState state, RandomAccessFile raf) throws IOException {
         int count = state.getSegmentCount(); 
         System.out.println(count);
@@ -190,7 +203,7 @@ public class Main {
             ProcessorState state = elfHeaderParse(raf);
             loadSegments(state, raf);
             state.dumpMemory("dump.txt");
-            
+            initStack(state, raf); 
             InstructionDecoder decoder = new InstructionDecoder();
             for (;;) {
                 int instrWord = state.fetchInstruction();
