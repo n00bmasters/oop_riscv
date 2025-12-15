@@ -1,1 +1,52 @@
-[]
+[
+  {
+    "name": "SLLD Basic",
+    "mnemonic": "SLLD",
+    "xlen": 128,
+    "instruction_hex": "0x002091FB",
+    "regs_in": {
+      "1": "1",
+      "2": "1"
+    },
+    "regs_out": {
+      "3": "2"
+    }
+  },
+  {
+    "name": "SRAD Basic (Sign extension)",
+    "mnemonic": "SRAD",
+    "xlen": 128,
+    "instruction_hex": "0x4020D1FB",
+    "regs_in": {
+      "1": "0xFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF",
+      "2": "1"
+    },
+    "regs_out": {
+      "3": "0xFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF"
+    }
+  },
+  {
+    "name": "SLLID (Immediate) Basic",
+    "mnemonic": "SLLID",
+    "xlen": 128,
+    "instruction_hex": "0x001091DB",
+    "regs_in": {
+      "1": "1"
+    },
+    "regs_out": {
+      "3": "2"
+    }
+  },
+  {
+    "name": "SRAID (Immediate) Basic",
+    "mnemonic": "SRAID",
+    "xlen": 128,
+    "instruction_hex": "0x4010D1DB",
+    "regs_in": {
+      "1": "0xFFFFFFFFFFFFFFFF"
+    },
+    "regs_out": {
+      "3": "0xFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF"
+    }
+  }
+]

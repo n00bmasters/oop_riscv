@@ -18,10 +18,14 @@ public class ExtensionIDecoder implements ExtensionDecoder {
                 return decodeRType(instructionWord);
             case 0b0111011: // R-type instructions (RV64I)
                 return decodeRType64(instructionWord);
+            case 0b1111011: // R-type instructions (RV64I)
+                return decodeRType128(instructionWord);
             case 0b0010011: // I-type arithmetic instructions
                 return decodeITypeArithmetic(instructionWord);
             case 0b0011011: // I-type arithmetic instructions (RV64I)
                 return decodeITypeArithmetic64(instructionWord);
+            case 0b1011011:
+                return decodeITypeArithmetic128(instructionWord);
             case 0b0000011: // I-type load instructions
                 return decodeITypeLoad(instructionWord);
             case 0b1100011: // B-type branch instructions
@@ -123,6 +127,34 @@ public class ExtensionIDecoder implements ExtensionDecoder {
         }
         return null;
     }
+
+    private Instruction decodeRType128(int instructionWord) {
+        int funct3 = getBits(instructionWord, 12, 14);
+        int funct7 = getBits(instructionWord, 25, 31);
+        
+        switch (funct3) {
+            case 0b000:
+                if (funct7 == 0b0000000) {
+                    return new Addd(instructionWord);
+                } else if (funct7 == 0b0100000) {
+                    return new Subd(instructionWord);
+                }
+                break;
+            case 0b001:
+                if (funct7 == 0b0000000) {
+                    return new Slld(instructionWord);
+                }
+                break;
+            case 0b101:
+                if (funct7 == 0b0000000) {
+                    return new Srld(instructionWord);
+                } else if (funct7 == 0b0100000) {
+                    return new Srad(instructionWord);
+                }
+                break;
+        }
+        return null;
+    }
     
     private Instruction decodeITypeArithmetic(int instructionWord) {
         int funct3 = getBits(instructionWord, 12, 14);
@@ -156,7 +188,7 @@ public class ExtensionIDecoder implements ExtensionDecoder {
     
     private Instruction decodeITypeArithmetic64(int instructionWord) {
         int funct3 = getBits(instructionWord, 12, 14);
-        int funct7 = getBits(instructionWord, 25, 31);
+        int funct7 = getBits(instructionWord, 26, 31);
         
         switch (funct3) {
             case 0b000: // addiw
@@ -166,8 +198,28 @@ public class ExtensionIDecoder implements ExtensionDecoder {
             case 0b101: // srliw, sraiw
                 if (funct7 == 0x0) {
                     return new Srliw(instructionWord);
-                } else if (funct7 == 0x20) {  // Note: Different funct7 value for SRAIW
+                } else if (funct7 == 0x10) {  // Note: Different funct7 value for SRAIW
                     return new Sraiw(instructionWord);
+                }
+                break;
+        }
+        return null;
+    }
+
+    private Instruction decodeITypeArithmetic128(int instructionWord) {
+        int funct3 = getBits(instructionWord, 12, 14);
+        int funct7 = getBits(instructionWord, 26, 31);
+        
+        switch (funct3) {
+            case 0b000: // addiw
+                return new Addid(instructionWord);
+            case 0b001: // slliw
+                return new Sllid(instructionWord);
+            case 0b101: // srliw, sraiw
+                if (funct7 == 0x0) {
+                    return new Srlid(instructionWord);
+                } else if (funct7 == 0x10) {  // Note: Different funct7 value for SRAIW
+                    return new Sraid(instructionWord);
                 }
                 break;
         }
