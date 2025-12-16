@@ -205,17 +205,24 @@ public class Main {
             state.dumpMemory("dump.txt");
             initStack(state, raf); 
             InstructionDecoder decoder = new InstructionDecoder();
+            int instrCount = 0;
             for (;;) {
                 int instrWord = state.fetchInstruction();
                 System.out.printf("PC: 0x%08X, Instr: 0x%08X\n", state.getPC().getValue().intValue(), instrWord);
                 Instruction instr = decoder.decode(instrWord);
-                if (instr == null) {
-                    System.err.print("Unknown instruction, likely program has ended\n");
+                if (instr == null || instrWord == 0x00000073 || instrWord == 0x00008067) {
+                    printState(state);
+                    System.err.println("Total instructions executed: " + instrCount);
+                    System.err.print("Program ended: ");
+                    if (instr == null) System.err.print("unknown instruction");
+                    else if (instrWord == 0x00000073) System.err.print("ECALL");
+                    else System.err.print("RET");
+                    System.err.println();
                     System.exit(0);
                 }
+                instrCount++;
                 instr.execute(state);
                 state.setPC(state.getPC().add(new RVWord(BigInteger.valueOf(4))));
-                //printState(state);
             }
         }
         // RVWord testWord = new RVWord(BigInteger.valueOf(32));
