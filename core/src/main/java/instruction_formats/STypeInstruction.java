@@ -17,5 +17,11 @@ public abstract class STypeInstruction implements Instruction{
         int rawImm = (imm11_5 << 5) | imm4_0;
         imm = new RVWord(BigInteger.valueOf(rawImm)).signExtend(12);
     }
+
+    @Override
+    public String toString() {
+        return this.getClass().toString().substring(this.getClass().toString().indexOf('.') + 1).toLowerCase() + " x" + String.valueOf(rs1) + ", x" + String.valueOf(rs2) + ", " + imm.getSignedValue();
+    }
+
     public abstract void execute(ProcessorState state);
 }

@@ -15,4 +15,9 @@ public abstract class ITypeInstruction implements Instruction{
         imm = new RVWord(BigInteger.valueOf(getBits(instructionWord, 20, 31))).signExtend(12);
     }
     public abstract void execute(ProcessorState state);
+
+    @Override
+    public String toString() {
+        return this.getClass().toString().substring(this.getClass().toString().indexOf('.') + 1).toLowerCase() + " x" + String.valueOf(rd) + ", x" + String.valueOf(rs1) + ", " + imm.getSignedValue();
+    }
 }

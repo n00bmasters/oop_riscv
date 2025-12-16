@@ -18,5 +18,11 @@ public abstract class BTypeInstruction implements Instruction{
         int rawImm = (imm12 << 12) | (imm11 << 11) | (imm10_5 << 5) | (imm4_1 << 1);
         label = new RVWord(BigInteger.valueOf(rawImm)).signExtend(13);
     }
+
+    @Override
+    public String toString() {
+        return this.getClass().toString().substring(this.getClass().toString().indexOf('.') + 1).toLowerCase() + " x" + String.valueOf(rs1) + ", x" + String.valueOf(rs2) + ", " + label.getSignedValue();
+    }
+
     public abstract void execute(ProcessorState state);
 }

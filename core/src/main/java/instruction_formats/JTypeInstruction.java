@@ -17,6 +17,12 @@ public abstract class JTypeInstruction implements Instruction {
         int imm10_1 = getBits(instructionWord, 21, 30);
         imm = new RVWord(BigInteger.valueOf((imm20 << 20) | (imm19_12 << 12) | (imm11 << 11) | (imm10_1 << 1))).signExtend(21);
     }
+
+    @Override
+    public String toString() {
+        return this.getClass().toString().substring(this.getClass().toString().indexOf('.') + 1).toLowerCase() + " x" + String.valueOf(rd) + ", " + imm.getSignedValue();
+    }
+
     public abstract void execute(ProcessorState state);
 }
 

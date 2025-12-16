@@ -13,4 +13,9 @@ public abstract class RTypeInstruction implements Instruction {
         rs2 = getBits(instructionWord, 20, 24);
     }
     public abstract void execute(ProcessorState state);
+
+    @Override
+    public String toString() {
+        return this.getClass().toString().substring(this.getClass().toString().indexOf('.') + 1).toLowerCase() + " x" + String.valueOf(rd) + ", x" + String.valueOf(rs1) + ", x" + String.valueOf(rs2);
+    }
 }
