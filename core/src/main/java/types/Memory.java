@@ -117,7 +117,7 @@ public class Memory{
 
     public void dumpToFile(String filename) throws IOException {
     try (PrintWriter writer = new PrintWriter(new FileWriter(filename))) {
-        for (var entry : pages.entrySet()) {
+        for (Map.Entry<RVWord, Page> entry : pages.entrySet()) {
             RVWord addr = entry.getKey();
             Page page = entry.getValue();
 
@@ -135,6 +135,22 @@ public class Memory{
             writer.println("\n");
         }
     }
-}
+    }
 
+    public void dumpToConsole() {
+        System.out.println("Memory Dump:");
+        for (Map.Entry<RVWord, Page> entry : pages.entrySet()) {
+            RVWord addr = entry.getKey();
+            Page page = entry.getValue();
+            System.out.printf("0x%x (Flags: %s)\n", addr.getValue(), "zaglushka.");
+            for (int i = 0; i < 4096; i++) {
+                byte b = page.rawRead(i);
+                System.out.printf("%02X ", b);
+                if ((i + 1) % 16 == 0) {
+                    System.out.println();
+                }
+            }
+            System.out.println("\n");
+        }
+    }
 }

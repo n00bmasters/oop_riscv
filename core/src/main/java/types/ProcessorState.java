@@ -93,6 +93,10 @@ public class ProcessorState {
         try { mem.dumpToFile(filename); } catch (IOException e) {}
     }
 
+    public void dumpMemoryToConsole() {
+        mem.dumpToConsole();
+    }
+
     public int fetchInstruction() {
         RVWord word = mem.readMemory(pc, 4);
         return word.getValue().intValue();

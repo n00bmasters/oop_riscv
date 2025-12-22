@@ -7,6 +7,7 @@ import java.nio.charset.StandardCharsets;
 import java.io.RandomAccessFile;
 import java.io.File;
 import java.io.IOException;
+import java.util.Scanner;
 import decoder.InstructionDecoder;
 import types.*;
 import instruction_formats.Instruction;
@@ -205,27 +206,64 @@ public class Main {
             state.dumpMemory("dump.txt");
             initStack(state, raf); 
             InstructionDecoder decoder = new InstructionDecoder();
-            int instrCount = 0;
+            Scanner scanner = new Scanner(System.in);
             for (;;) {
                 int instrWord = state.fetchInstruction();
-                System.out.printf("PC: 0x%08X, Instr: 0x%08X\n", state.getPC().getValue().intValue(), instrWord);
-                Instruction instr = decoder.decode(instrWord);
-                if (instr == null || instrWord == 0x00000073 || instrWord == 0x00008067) {
-                    printState(state);
-                    System.err.println("Total instructions executed: " + instrCount);
-                    System.err.print("Program ended: ");
-                    if (instr == null) System.err.print("unknown instruction");
-                    else if (instrWord == 0x00000073) System.err.print("ECALL");
-                    else System.err.print("RET");
-                    System.err.println();
-                    System.exit(0);
+                System.out.printf("Next: PC: 0x%08X, Instr: 0x%08X\n", state.getPC().getValue().intValue(), instrWord);
+                System.out.print("(gdb) ");
+                String command = scanner.nextLine().trim();
+                String cmd = command.toLowerCase();
+                switch (cmd) {
+                    case "s":
+                    case "step":
+                        Instruction instr = decoder.decode(instrWord);
+                        if (instr == null || instrWord == 0x00000073 || instrWord == 0x00008067) {
+                            printState(state);
+                            System.err.print("Program ended: ");
+                            if (instr == null) System.err.print("unknown instruction");
+                            else if (instrWord == 0x00000073) System.err.print("ECALL");
+                            else System.err.print("RET");
+                            System.err.println();
+                            break;
+                        }
+                        instr.execute(state);
+                        state.setPC(state.getPC().add(new RVWord(BigInteger.valueOf(4))));
+                        break;
+                    case "c":
+                    case "continue":
+                        while (true) {
+                            Instruction instrC = decoder.decode(instrWord);
+                            if (instrC == null || instrWord == 0x00000073 || instrWord == 0x00008067) {
+                                printState(state);
+                                System.err.print("Program ended: ");
+                                if (instrC == null) System.err.print("unknown instruction");
+                                else if (instrWord == 0x00000073) System.err.print("ECALL");
+                                else System.err.print("RET");
+                                System.err.println();
+                                break;
+                            }
+                            instrC.execute(state);
+                            state.setPC(state.getPC().add(new RVWord(BigInteger.valueOf(4))));
+                            instrWord = state.fetchInstruction();
+                            System.out.printf("PC: 0x%08X, Instr: 0x%08X\n", state.getPC().getValue().intValue(), instrWord);
+                        }
+                        break;
+                    case "p":
+                    case "print":
+                        printState(state);
+                        break;
+                    case "d":
+                    case "dump":
+                        state.dumpMemoryToConsole();
+                        break;
+                    case "q":
+                    case "quit":
+                        break;
+                    default:
+                        System.out.println("Commands: s/step, c/continue, p/print, d/dump, q/quit");
+                        break;
                 }
-                instrCount++;
-                instr.execute(state);
-                state.setPC(state.getPC().add(new RVWord(BigInteger.valueOf(4))));
             }
         }
-        // RVWord testWord = new RVWord(BigInteger.valueOf(32));
-        // System.out.printf("types.RVWord xlen = %d\n", testWord.getXlen());
     }
 }
