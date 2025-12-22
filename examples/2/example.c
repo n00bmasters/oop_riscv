@@ -1,9 +1,8 @@
-int main(){
-    int a = 123;
-    if (a % 2 == 1){
-        a *= 2;
-    } else {
-        a = 12;
+int arr[10];
+
+int main() {
+    for (int i = 0; i < 10; i++) {
+        arr[i] = i * 10;
     }
-    return 12;
+    return 0;
 }
