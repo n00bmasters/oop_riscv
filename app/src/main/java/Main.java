@@ -209,14 +209,14 @@ public class Main {
             Scanner scanner = new Scanner(System.in);
             for (;;) {
                 int instrWord = state.fetchInstruction();
-                System.out.printf("Next: PC: 0x%08X, Instr: 0x%08X\n", state.getPC().getValue().intValue(), instrWord);
+                Instruction instr = decoder.decode(instrWord);
+                System.out.printf("Next: PC: 0x%08X, Instr: 0x%08X %s\n", state.getPC().getValue().intValue(), instrWord, instr);
                 System.out.print("(gdb) ");
                 String command = scanner.nextLine().trim();
                 String cmd = command.toLowerCase();
                 switch (cmd) {
                     case "s":
                     case "step":
-                        Instruction instr = decoder.decode(instrWord);
                         if (instr == null || instrWord == 0x00000073 || instrWord == 0x00008067) {
                             printState(state);
                             System.err.print("Program ended: ");
@@ -245,7 +245,7 @@ public class Main {
                             instrC.execute(state);
                             state.setPC(state.getPC().add(new RVWord(BigInteger.valueOf(4))));
                             instrWord = state.fetchInstruction();
-                            System.out.printf("PC: 0x%08X, Instr: 0x%08X\n", state.getPC().getValue().intValue(), instrWord);
+                            System.out.printf("PC: 0x%08X, Instr: 0x%08X %s\n", state.getPC().getValue().intValue(), instrWord, instrC);
                         }
                         break;
                     case "p":
