@@ -1,0 +1,17 @@
+
+example.elf:     file format elf32-littleriscv
+
+
+Disassembly of section .text:
+
+00010074 <main>:
+   10074:	fe010113          	addi	x2,x2,-32
+   10078:	00812e23          	sw	x8,28(x2)
+   1007c:	02010413          	addi	x8,x2,32
+   10080:	00a00793          	addi	x15,x0,10
+   10084:	fef42623          	sw	x15,-20(x8)
+   10088:	00000793          	addi	x15,x0,0
+   1008c:	00078513          	addi	x10,x15,0
+   10090:	01c12403          	lw	x8,28(x2)
+   10094:	02010113          	addi	x2,x2,32
+   10098:	00008067          	jalr	x0,0(x1)

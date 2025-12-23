@@ -1,0 +1,35 @@
+
+example.elf:     file format elf32-littleriscv
+
+
+Disassembly of section .text:
+
+00010094 <main>:
+   10094:	fe010113          	addi	x2,x2,-32
+   10098:	00812e23          	sw	x8,28(x2)
+   1009c:	02010413          	addi	x8,x2,32
+   100a0:	fe042623          	sw	x0,-20(x8)
+   100a4:	0400006f          	jal	x0,100e4 <main+0x50>
+   100a8:	fec42703          	lw	x14,-20(x8)
+   100ac:	00070793          	addi	x15,x14,0
+   100b0:	00279793          	slli	x15,x15,0x2
+   100b4:	00e787b3          	add	x15,x15,x14
+   100b8:	00179793          	slli	x15,x15,0x1
+   100bc:	00078693          	addi	x13,x15,0
+   100c0:	000117b7          	lui	x15,0x11
+   100c4:	10478713          	addi	x14,x15,260 # 11104 <__DATA_BEGIN__>
+   100c8:	fec42783          	lw	x15,-20(x8)
+   100cc:	00279793          	slli	x15,x15,0x2
+   100d0:	00f707b3          	add	x15,x14,x15
+   100d4:	00d7a023          	sw	x13,0(x15)
+   100d8:	fec42783          	lw	x15,-20(x8)
+   100dc:	00178793          	addi	x15,x15,1
+   100e0:	fef42623          	sw	x15,-20(x8)
+   100e4:	fec42703          	lw	x14,-20(x8)
+   100e8:	00900793          	addi	x15,x0,9
+   100ec:	fae7dee3          	bge	x15,x14,100a8 <main+0x14>
+   100f0:	00000793          	addi	x15,x0,0
+   100f4:	00078513          	addi	x10,x15,0
+   100f8:	01c12403          	lw	x8,28(x2)
+   100fc:	02010113          	addi	x2,x2,32
+   10100:	00008067          	jalr	x0,0(x1)

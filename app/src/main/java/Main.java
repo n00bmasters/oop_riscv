@@ -213,7 +213,8 @@ public class Main {
                 System.out.printf("Next: PC: 0x%08X, Instr: 0x%08X %s\n", state.getPC().getValue().intValue(), instrWord, instr);
                 System.out.print("(gdb) ");
                 String command = scanner.nextLine().trim();
-                String cmd = command.toLowerCase();
+                String[] parts = command.split("\\s+");
+                String cmd = parts[0].toLowerCase();
                 switch (cmd) {
                     case "s":
                     case "step":
@@ -255,6 +256,20 @@ public class Main {
                     case "d":
                     case "dump":
                         state.dumpMemoryToConsole();
+                        break;
+                    case "m":
+                    case "mem":
+                        try {
+                            if (parts.length < 2) {
+                                System.out.println("Usage: m <address> [length]");
+                            } else {
+                                long addr = Long.decode(parts[1]);
+                                int len = (parts.length > 2) ? Integer.decode(parts[2]) : 64;
+                                state.mem.dump(addr, len);
+                            }
+                        } catch (Exception e) {
+                            System.out.println("Error parsing address/length: " + e.getMessage());
+                        }
                         break;
                     case "q":
                     case "quit":
