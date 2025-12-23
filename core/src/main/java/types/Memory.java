@@ -153,4 +153,25 @@ public class Memory{
             System.out.println("\n");
         }
     }
+
+    public void dump(long address, int count) {
+        System.out.printf("Dump: 0x%08x (%d bytes)%n", address, count);
+        int cols = 16;
+        for (int i = 0; i < count; i += cols) {
+            System.out.printf("0x%08x: ", address + i);
+
+            for (int j = 0; j < cols; j++) {
+                if (i + j < count) {
+                    try {
+                        System.out.printf("%02x ", readMemory(new RVWord(BigInteger.valueOf(address + i + j)), 1).getValue().intValue());
+                    } catch (Exception e) {
+                        System.out.print("?? ");
+                    }
+                } else {
+                    System.out.print("   ");
+                }
+            }
+            System.out.println();
+        }
+    }
 }
